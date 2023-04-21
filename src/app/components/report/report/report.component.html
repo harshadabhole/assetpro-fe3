@@ -1,0 +1,120 @@
+<!-- <app-spinner *ngIf="loading"></app-spinner> -->
+  <!-- <div class="container-fluid mt-4">
+    <app-header></app-header>
+</div> -->
+<div class="m-4">
+    <div class="card bg-light mt-5" >
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-4" >
+                    <span class="card-title" style="color:#6c757d;font-weight:bold;">Department</span>
+                    <div class="col-12 search_bar">
+                      <span *ngIf="showDeptSearchbar==true">
+                        <input type="text" placeholder="Name of the department..."style="width:95%;"  (input)="onDeptChange($event.target.value)">
+                      </span>
+                      <span *ngIf="showDeptSearchbar ==false">
+                        <div *ngFor="let element of selectDeptList" style="display:inline-block;">
+                          <span class="badge badge-pill">
+                            {{element}}
+                            <button type="button" class="close" aria-label="Close" (click)="onSelectDept(element,'DELETE')">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </span>
+                        </div>
+                      </span>
+                  </div>
+
+                        <div class="col-12 dept">
+                          <span *ngIf="deptList.length == 0">
+                            No Departments Found
+                          </span>
+                          <span *ngIf="deptList.length > 0">
+                            <div *ngFor="let element of deptList">
+                              <span (click)="onSelectDept(element,'ADD')" style="cursor: pointer;">
+                                {{element?.Name}}
+                              </span>
+                            </div>
+                          </span>
+                        </div>
+                </div>
+
+                <div class="col-4">
+                  <span class="card-title" style="color:#6c757d;font-weight:bold;">Asset Type</span>
+                  <div class="col-12 search_bar">
+                    <span *ngIf="showAssetSearchbar == true">
+                      <input type="text" style="width:95%;" placeholder="Name of the asset..." (input)="onAssetChange($event.target.value)">
+                     
+                    </span>
+                    <span *ngIf="showAssetSearchbar == false">
+                      <div *ngFor="let element of selectAssetList" style="display:inline-block;">
+                        <span class="badge badge-pill">
+                          {{element}}
+                          <button type="button" class="close" aria-label="Close" (click)="onSelectAsset(element,'DELETE')">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </span>
+                      </div>
+                    </span>
+                      
+                  </div>
+                      <div class="col-12 dept">
+                        <span *ngIf="assetList.length == 0">
+                          No Assets Found
+                        </span>
+                        <span>
+                          <div style="margin-top:2px;" *ngFor="let element of assetList ; let i=index" >
+                            <span>
+                             <span *ngIf="show ==false || index!=i">
+                               <img src="../../../assets/images/icons8-plus-48.png" height="15" width="16" style="cursor:pointer;" (click)="changeIcon('Show',i)">
+                             </span>
+                             <span *ngIf="show ==true && index===i">
+                               <img src="../../../assets/images/minus.png" height="15" width="16" style="cursor:pointer;" (click)="changeIcon('Hide',i)"> 
+                             </span>
+                             <span style="cursor: pointer;" (click)="onSelectAsset(element,'ADD TYPE')">{{element?.assetstype}}</span>
+                             <span *ngIf="show ==true && index===i">
+                               <div class="mt-2">
+                                 <div *ngFor="let asset of element.assets">
+                                   <span style="margin-left:12%; cursor:pointer; color:#a7a7b4;cursor: pointer;" (click)="onSelectAsset(asset,'ADD ASSET')">
+                                     {{asset?.Name}}
+                                   </span>
+                                 </div>
+                               </div>
+                             </span>
+                            </span> 
+                           </div>
+                        </span>
+                      </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" (click)="checkDates($event)" style="cursor: pointer;" checked>
+                    <label class="form-check-label ml-1 mt-2" style="font-weight: bold; font-size:14px;">See Historical Data</label>
+                  </div>
+                    <div class="mt-2" *ngIf="showDateRange">
+                      <span style="color:#6c757d">
+                        Date Range
+                      </span>
+                      <div class="row mt-2 ml-2">
+                        <input type="date" class="my-input" [value]="date" (change)="selectStartDate($event)">
+                      </div>
+                      <div class="row mt-3 ml-2">
+                        <input type="date" class="my-input1" [value]="date" [max]="date" (change)="selectEndDate($event)">
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-2">
+                  <div class="mt-4">
+                    <button class="oval-button" (click)="onClear('Apply')">Apply</button>
+                  </div>
+                  <div>
+                    <button class="cancel-button" (click)="onClear('Clear')">Clear</button>
+                  </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>

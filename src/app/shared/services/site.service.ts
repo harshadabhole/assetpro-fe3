@@ -19,11 +19,9 @@ export class SiteService {
 
   changeSite(siteId:string) {
   this.selectedSite = siteId;
-  console.log('siteId',siteId)
       this.updateSiteID.next(siteId);
   }
   getselectedSite(){
-    console.log('this.selectedSite func',this.selectedSite)
     return this.selectedSite;
   }
 
@@ -31,14 +29,24 @@ export class SiteService {
     return this.http.get<any>(
       `${this.baseUrl}api/Site/getSiteByCompany/${companyId}`
     );
-}
+  }
 getAllDept( siteId:any): Observable<any> {
   return this.http.post<any>(
     `${this.baseUrl}api/Department/getDepartmentBySiteId`,
     {
-      "siteId":[siteId]
+      "SiteId":[siteId]
     }
   );
+}
+
+getAllCompany():Observable<any>{
+  return this.http.get<any>(
+    `${this.baseUrl}api/Company/getAllCompany`);
+}
+
+getAllAsset(data:any):Observable<any>{
+  return this.http.post<any>(
+    `${this.baseUrl}api/Asset/getAssetBySiteId`,data);
 }
 
 }

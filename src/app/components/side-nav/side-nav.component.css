@@ -1,0 +1,25 @@
+.side-bar-container {
+    position: fixed;
+    width: 9%;
+    border: 1px solid rgba(179,231,255,.33);
+    background-color: #fff;
+    z-index: 1;
+    height: 100%;
+    opacity: 1!important;
+    /* top: 0; */
+}
+
+@media (min-width: 768px) {
+    .d-md-block {
+        display: block !important;
+    }
+}
+
+
+.item-menu-txt {
+    color: #64646e;
+    font-family: robotoCondensedregular;
+    font-size: 11px;
+    letter-spacing: .46px;
+    line-height: 15px;
+}

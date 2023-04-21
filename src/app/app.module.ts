@@ -4,18 +4,20 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './components/header/header.component';
-import { HomeComponent } from './components/home/home.component';
 import { SiteService } from './shared/services/site.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from "@angular/forms";
 import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import { LabelModule } from "@progress/kendo-angular-label";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { DashboardModule } from './components/dashboard/dashboard.module';
+import { ReportModule } from './components/report/report.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +25,13 @@ import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
     DropDownsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    LabelModule,
+    InputsModule,
+    ButtonsModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    DashboardModule,
+    ReportModule
   ],
   providers: [SiteService],
   bootstrap: [AppComponent]

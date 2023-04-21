@@ -1,0 +1,109 @@
+.dept {
+    height: 200px;
+    border: 1px solid rgba(0,0,0,.125);
+    background-color: white;
+    overflow: auto;
+}
+
+.dept::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+.dept::-webkit-scrollbar-thumb {
+    background-color: #4a90e2;
+    border-radius: 2px;
+  }
+
+.search_bar{
+  border: 1px solid rgba(0,0,0,.125);
+  background-color:white;
+  position: relative;
+  background-image: url('../../../../assets/images/icons8-search-50.png');
+  background-repeat: no-repeat;
+  background-size: 15px 18px;
+  background-position:  calc(100% - 10px) center;
+}
+
+.input-box{
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  border: none;
+  height:35px;
+}
+
+input:hover {
+  border: none;
+}
+input:focus {
+  outline: none;
+  border: none;
+}
+
+:host ::ng-deep .badge {
+  font-size: 12px;
+  background-color: #31cbed;
+  color: white;
+  height: 10%;
+  width:auto;
+  line-height:inherit;
+}
+
+input[type="checkbox"] {
+  accent-color: #e610c2a6;
+}
+
+.oval-button {
+  cursor: pointer;
+    width: 100px;
+    height: 100%;
+    border-radius: 17.5px;
+    background: #169bd7;
+    text-align: center;
+    color:white;
+    border: 1px solid #169bd7 !important;
+}
+
+.cancel-button{
+  cursor: pointer;
+    margin-top: 11%;
+    width: 100px;
+    height: 91%;
+    border-radius: 17.5px;
+    background-color: #fff;
+    text-align: center;
+    color:#169bd7;
+    border: 1px solid #169bd7 !important;
+}
+
+.my-input {
+  border: 2px solid #169bd7 !important;
+  border-radius: 17px;
+  padding-left:5px;
+  height:30px;
+  padding-right:5px;
+  width:155px;
+}
+
+.my-input1 {
+  border: 2px solid #169bd7 !important;
+  border-radius: 17px;
+  padding-left:5px;
+  height:30px;
+  width:155px;
+  padding-right:5px;
+}
+
+span[aria-hidden="true"] {
+  color: white;
+}
+
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+

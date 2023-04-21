@@ -1,2 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 /* @import "~@progress/kendo-theme-default/dist/all.scss"; */
+
+/* @import "~@progress/kendo-theme-bootstrap/dist/all.scss"; */
+
+
+/* @import "~@progress/kendo-theme-bootstrap/scss/autocomplete/_index.scss";
+@import "~@progress/kendo-theme-bootstrap/scss/combobox/_index.scss";
+@import "~@progress/kendo-theme-bootstrap/scss/dropdownlist/_index.scss";
+@import "~@progress/kendo-theme-bootstrap/scss/dropdowntree/_index.scss";
+@import "~@progress/kendo-theme-bootstrap/scss/multiselect/_index.scss"; */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";

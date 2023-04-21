@@ -1,8 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DashboardModule } from './components/dashboard/dashboard.module';
 import { HomeComponent } from './components/home/home.component';
+import { ReportModule } from './components/report/report.module';
 
-const routes: Routes = [ { path: "home", component : HomeComponent }];
+const routes: Routes = [ 
+// { path: '**', redirectTo: 'home'}  ,
+{ path: 'dashboard', component: HomeComponent, loadChildren: ()=>DashboardModule },
+{ path: 'report', component: HomeComponent, loadChildren: ()=>ReportModule },
+
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

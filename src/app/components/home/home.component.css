@@ -1,5 +1,39 @@
+
+
+
 .dept {
     height: 200px;
     border: 1px solid rgba(0,0,0,.125);
     background-color: white;
+    overflow: auto;
+}
+
+.dept::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .dept::-webkit-scrollbar-thumb {
+    background-color: #4a90e2;
+    border-radius: 2px;
+  }
+.search_bar{
+  height: 35px;
+  border: 1px solid rgba(0,0,0,.125);
+  background-color:white;
+  position: relative;
+}
+
+.input-box{
+  position: relative;
+  display: inline-block;
+}
+input {
+  border: none;
+}
+input:hover {
+  border: none;
+}
+input:focus {
+  outline: none;
+  border: none;
 }

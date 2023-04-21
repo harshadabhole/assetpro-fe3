@@ -1,2 +1,48 @@
 
-    <kendo-dropdownlist (selectionChange)="onChange($event)" [data]="listItems"></kendo-dropdownlist>
+    
+
+
+    <nav class="navbar navbar-expand-lg navbar-style">
+        <!-- <a class="navbar-brand" href="#">Asset 360</a> -->
+        <img src="../../../assets/images/logo-logo-corner.png" height="60" width="120">
+        <div class="container mt-2">
+          <div class="row">
+              <div class="col-6">
+                  <div class="customSearch">
+                      <input type="text" placeholder="Select Company"
+                          (focusin)="showCompany = true" 
+                          (blur)="showCompany = false" 
+                          (input)="onSearch($event.target.value)"
+                          [(ngModel)]="selectedOption">
+                      <ul *ngIf="showCompany">
+                          <span *ngIf="showCompanyList">
+                              <li *ngFor="let option of companyItems" (mousedown)="onChangeCompany(option.Name)">{{ option.Name }}</li>
+                          </span>
+                          <span *ngIf="!showCompanyList">
+                              <li>No Company Found</li>
+                          </span>
+                      </ul>
+                    </div>
+              </div>
+              <div class="col-6">
+                  <div class="customSearch">
+                      <input type="text" placeholder="Select Site"
+                          (focusin)="showSites = true" 
+                          (focusout)="showSites = false" 
+                          (keyup)="onSearchSite($event.target.value)"
+                          [(ngModel)]="selectDeptOption">
+                      <ul *ngIf="showSites">
+                          <span *ngIf="showSiteList">
+                              <li *ngFor="let option of listItems" (mousedown)="onChangeSite(option.Name)">{{ option.Name }}</li>
+                          </span>
+                          <span *ngIf="!showSiteList">
+                              <li>No Sites Found</li>
+                          </span>
+                      </ul>
+                    </div>
+              </div>
+          </div>
+      </div>
+      
+       
+      </nav>
