@@ -49,4 +49,9 @@ getAllAsset(data:any):Observable<any>{
     `${this.baseUrl}api/Asset/getAssetBySiteId`,data);
 }
 
+getMaintenanceStatusReport(data:any):Observable<any>{
+  return this.http.post<any>(
+    `${this.baseUrl}api/Asset/getMaintenanceStatusReport`,data)
+}
+
 }

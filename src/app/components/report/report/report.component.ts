@@ -26,6 +26,9 @@ public cover =
   selectedOptions = new FormControl();
   filterAsset: any;
   filterDeptList: any;
+  assetNameList:any=[];
+  assetIDList:any=[];
+  assetDetails:any=[];
   startDate: any;
   endDate:any
   date: any ;
@@ -42,7 +45,6 @@ public cover =
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();
       this.getAllDeptBySiteID();
-      //this.getAllAssetsBySiteId();
     })
    }
 
@@ -52,8 +54,15 @@ ngOnInit() {
 
   getAllDeptBySiteID() {
     this.deptList=[];
+    this.assetList=[];
+    this.selectAssetList=[];
+    this.selectDeptList=[];
+    this.assetDetails=[];
+    this.filterAsset=[];
+    this.filterDeptList=[];
+    this.showAssetSearchbar=true;
+    this.showDeptSearchbar=true;
     this._siteService.getAllDept(this.selectedSite).subscribe((res:any)=>{
-      console.log("DEPT----",res[0].Data)
       res[0].Data.forEach(element => {
         this.deptList.push(element)
       });
@@ -70,10 +79,8 @@ ngOnInit() {
     this.assetList=[];
     const object={
       SiteID:SiteID
-      //SiteID:'BE87DE7F-5158-48B3-8042-2B47ACF5E785'
     }
-    console.log("SITE---",this.selectedSite)
-    console.log("OBJ---",object)
+    
     this._siteService.getAllAsset(object).subscribe((response:any)=>{
       console.log('Assets---',response)
       this.assetList=response[0].Data
@@ -99,9 +106,7 @@ ngOnInit() {
     {
       this.selectDeptList=this.selectDeptList.filter((item:any) => item !== data)
       this.showDeptSearchbar=this.selectDeptList.length > 0?false:true;
-      setInterval( async()=> {
-        this.loading=false;
-      },1000)
+      this.loading=false;
 
     }
     else
@@ -110,9 +115,7 @@ ngOnInit() {
       this.departmentID=data.ID
       this.getAllAssetsBySiteId(data.ID)
       this.showDeptSearchbar=false;
-      setInterval( async()=> {
-        this.loading=false;
-      },1000)
+      this.loading=false;
     }
    
   }
@@ -133,12 +136,20 @@ ngOnInit() {
               this.selectAssetList=this.selectAssetList.filter((item:any) => item !== element);
             }
           })
+
+          this.assetDetails = this.assetDetails.filter((obj:any) => obj.AssetTypeName !== data.assetstype);
           const d=`${data.assetstype}/All`
           this.selectAssetList.push(d)
           this.showAssetSearchbar=false;
-          setInterval( async()=> {
-            this.loading=false;
-          },1000)
+          data.assets.forEach((item:any)=>{
+            const assetDetails={
+              ID:item.ID,
+              Name:item.Name,
+              AssetTypeName:item.AssetTypeName
+            }
+            this.assetDetails.push(assetDetails)
+          })
+          this.loading=false;
         }
       }
       else if(value=='ADD ASSET')
@@ -151,27 +162,36 @@ ngOnInit() {
           const d=`${data.AssetTypeName}/${data.Name}`
           this.selectAssetList.push(d)
           this.showAssetSearchbar=false;
-          setInterval( async()=> {
-            this.loading=false;
-          },1000)
+          this.assetDetails = this.assetDetails.filter((obj:any) => obj.AssetTypeName !== data.AssetTypeName);
+          const assetDetails={
+            ID:data.ID,
+            Name:data.Name,
+            AssetTypeName:data.AssetTypeName
+          }
+          this.assetDetails.push(assetDetails)
+          this.loading=false;
         }
         else
         {
           const d=`${data.AssetTypeName}/${data.Name}`
             this.selectAssetList.push(d)
             this.showAssetSearchbar=false;
-            setInterval( async()=> {
-              this.loading=false;
-            },1000)
+            const assetDetails={
+              ID:data.ID,
+              Name:data.Name,
+              AssetTypeName:data.AssetTypeName
+            }
+            this.assetDetails.push(assetDetails)
+            this.loading=false;
         }
       }
       else
       {
         this.selectAssetList=this.selectAssetList.filter((item:any) => item !== data)
         this.showAssetSearchbar=this.selectAssetList.length > 0?false:true;
-        setInterval( async()=> {
-          this.loading=false;
-        },1000)
+        const x=data.split("/")
+        this.assetDetails = this.assetDetails.filter((obj:any) => obj.AssetTypeName !== x[0]);
+        this.loading=false;
       }
   }
 
@@ -227,15 +247,30 @@ ngOnInit() {
       this.selectDeptList=[];
       this.showDeptSearchbar=true;
       this.showAssetSearchbar=true;
-      setInterval( async()=> {
-        this.loading=false;
-      },3000)
+      this.assetDetails=[];
+      this.assetList=[];
+      this.show=false;
+      localStorage.removeItem('maintenanceStatusReport');
+      localStorage.removeItem('assetName');
+      this.loading=false;
     }
     else
     {
-      setInterval( async()=> {
+      this.assetDetails.forEach((element:any)=>{
+        this.assetIDList.push(element.ID)
+        this.assetNameList.push(element.Name)
+      })
+      const object={
+        assetID:this.assetIDList,
+        assetName:this.assetNameList,
+        SiteID:this.selectedSite
+      }
+      this._siteService.getMaintenanceStatusReport(object).subscribe((res:any)=>{
+        localStorage.setItem('assetName',JSON.stringify(this.assetNameList));
+        localStorage.setItem('maintenanceStatusReport',JSON.stringify(res[0].Data[0]));
+        window.open('/maintenance-report', '_blank');
         this.loading=false;
-      },3000)
+      })
     }
   }
 

@@ -1,18 +1,28 @@
 import { environment } from '../../../../environments/environment';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import { SiteService } from 'src/app/shared/services/site.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+  loading:boolean=false;
   map: mapboxgl.Map;
   style = 'mapbox://styles/mapbox/streets-v11';
   lat = 37.75;
   lng = -122.41;
-  constructor() { }
+  selectedSite: any;
+  constructor(
+    private _siteService: SiteService,
+  ) { 
+    this._siteService.updatedSiteId.subscribe((res: any) => {
+      this.selectedSite = this._siteService.getselectedSite();
+    })
+  }
   ngOnInit() {
+    this.loading=true;
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     Object.getOwnPropertyDescriptor(mapboxgl, "accessToken").set(environment.mapbox.accessToken);
       this.map = new mapboxgl.Map({
@@ -23,5 +33,6 @@ export class MapComponent implements OnInit {
     });
     // Add map controls
     this.map.addControl(new mapboxgl.NavigationControl());
+    this.loading=false;
   }
 }

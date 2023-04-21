@@ -1,0 +1,30 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="row">
+  <div class="col-xl-12">
+    <img src="../../../../assets/images/download.png" height="12" width="12" (click)="generatePDF()"> 
+  </div>
+</div>
+<div *ngIf="showStatusReport" id="content" class="container mt-3" style="border:1px solid rgba(0,0,0,.1);">
+  <p style="margin-left:10px;font-size:16px;font-weight:bold;margin-top:5px;">Maintenance Status Report</p>
+  <hr>
+  <div style="margin-left:10px;font-weight:bold;">Site: &nbsp; <span style="font-weight:normal;">{{siteName}}</span></div>
+  <div style="margin-left:10px;font-weight:bold;">Asset(s):&nbsp; <span style="display: inline-block;font-weight:normal;" *ngFor="let asset of assetName;let last = last">{{asset}} <span *ngIf="!last">, </span></span></div>
+  <div class="mt-1" style="margin-left:10px;font-weight:bold;">Total Assets:&nbsp; <span style="font-weight:normal;">{{total}}</span></div>
+  <hr>
+ 
+  <kendo-chart title="Maintenance Status" style="height: 350px; font-size:20px;">
+    <kendo-chart-legend position="bottom" ></kendo-chart-legend>
+    <kendo-chart-series>
+      <kendo-chart-series-item
+        type="pie"
+        [data]="pieData"
+        field="value"
+        categoryField="category"
+        colorField="colorField"
+        [labels]="{ visible: true, content: labelContent }"
+      >
+      </kendo-chart-series-item>
+    </kendo-chart-series>
+  </kendo-chart>
+  <hr>
+</div>

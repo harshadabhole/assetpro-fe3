@@ -30,7 +30,6 @@ getAllSites(data:any) {
   this.listItems=[];
   this.deptList=[];
   this._siteService.getAllSites(data).subscribe((res:any)=>{
-    console.log("res-==",res[0].Data)
     this.showSiteList=res[0].Data.length > 0 ? true:false;
     res[0].Data.forEach((element:any) => {
       const object={
@@ -64,22 +63,23 @@ onChangeSite(value:any)
   this.selectDeptOption=value
   const x=this.deptList.find((s:any) => s.Name === value);
   this._siteService.changeSite(x.ID);
+  localStorage.setItem('siteID',x.ID);
+  localStorage.setItem('siteName',x.Name)
 }
 
 onChangeCompany(value:string)
 {
-  console.log("CHANGE---",value)
+  this._siteService.changeSite('');
   this.selectedOption=value;
   this.selectDeptOption='';
   const x=this.companyList.find((s:any) => s.Name === value);
   this.selectedCompany=x.ID
   this.getAllSites(this.selectedCompany)
-  console.log("OPTION----",this.selectedOption)
+
 }
 
 onSearch(value:any)
 {
-  console.log("VALUE---",value)
   if (value.length > 0) 
   {
     const filteredData = this.companyList.filter((item:any) => {

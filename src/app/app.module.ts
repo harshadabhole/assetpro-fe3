@@ -14,6 +14,8 @@ import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { ReportModule } from './components/report/report.module';
+import { ChartsModule } from '@progress/kendo-angular-charts';
+import 'hammerjs';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { ReportModule } from './components/report/report.module';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ChartsModule,
     LabelModule,
     InputsModule,
     ButtonsModule,

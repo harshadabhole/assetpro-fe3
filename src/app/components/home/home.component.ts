@@ -42,8 +42,6 @@ public cover =
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();
       console.log('selectedSite',this.selectedSite);
-      this.getAllDeptBySiteID();
-      this.getAllAssetsBySiteId();
     })
     
    }
@@ -71,56 +69,5 @@ public cover =
     };
 
   }
-
-
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-  
-  getAllDeptBySiteID() {
-    this._siteService.getAllDept(this.selectedSite).subscribe((res:any)=>{
-      console.log("by org res",res);
-      res[0].Data.forEach(element => {
-        this.deptList.push(element);
-        this.dropdownList.push(element.Name )
-          console.log('this.dropdownList',this.dropdownList,this.selectedItems)
-          
-      });
-    })
-  }
-
-  getAllAssetsBySiteId()
-  {
-    const object={
-     // SiteID:this.selectedSite
-      SiteID:'BE87DE7F-5158-48B3-8042-2B47ACF5E785'
-    }
-    this._siteService.getAllAsset(object).subscribe((response:any)=>{
-      console.log("Assets---",response[0].Data)
-      this.assetList=response[0].Data
-    })
-  }
-
-  changeIcon(event:any,value:any,i:any)
-  {
-    this.index=i;
-    this.show=value=='Show'? true :false;
-  }
-
-  onSelectDept(data:any)
-  {
-    console.log("In dept-----",data)
-    this.showDeptSearchbar=false;
-    
-  }
-
-  onSelectAsset(data:any)
-  {
-    console.log("In ASset----",data)
-    console.log("Show--",this.show)
-    this.showAssetSearchbar=false;
-  }
+ 
 }

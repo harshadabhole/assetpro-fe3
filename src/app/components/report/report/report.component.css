@@ -66,6 +66,14 @@ input[type="checkbox"] {
     border: 1px solid #169bd7 !important;
 }
 
+.oval-button:focus{
+  outline: none;
+}
+
+.cancel-button:focus{
+  outline: none;
+}
+
 .cancel-button{
   cursor: pointer;
     margin-top: 11%;

@@ -14,7 +14,6 @@
   }
   
 input {
-    border: 1px solid black;
     border-radius: 25px;
     padding-left:5px;
     height:35px;
@@ -26,6 +25,14 @@ input {
     background-repeat: no-repeat;
     background-size: 14px 14px;
     background-position:  calc(100% - 14px) center;
+  }
+
+  input:hover {
+    border: none;
+  }
+  input:focus {
+    outline: none;
+    border: none;
   }
   
 ul {
