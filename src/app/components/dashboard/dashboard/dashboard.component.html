@@ -1,2 +1,48 @@
-
   <app-map></app-map>
+
+  <div class="container">
+    <div class="container mt-3" style="align-items: center;">
+      <div class="row">
+        <div class="col-4 custom-col">
+          <p class="customFont">Select Start Date:</p>
+          <input type="date" [value]="date" (change)="onChangeStart($event)">
+        </div>
+        <div class="col-4 custom-col">
+          <p class="customFont">Select End Date:</p>
+          <input type="date" [value]="date" (change)="onChangeEnd($event)">
+        </div>
+        <div class="col-4 custom-col">
+          <button  class="btn btn-primary w-25" (click)="onSearch($event)">Search</button>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-2" >
+      <kendo-chart>
+          <kendo-chart-title text="Power Usage"  font="20pt sans-serif" color="#007AB2"></kendo-chart-title>
+          <kendo-chart-legend position="top" ></kendo-chart-legend>
+          <kendo-chart-category-axis>
+            <kendo-chart-category-axis-item [categories]="categories" [labels]="{ rotation: -90,font: '16px Arial' }" ></kendo-chart-category-axis-item>
+          </kendo-chart-category-axis>
+          <kendo-chart-value-axis>
+              <kendo-chart-value-axis-item  [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
+              <kendo-chart-value-axis-item  [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }"></kendo-chart-value-axis-item>
+            </kendo-chart-value-axis>
+          <kendo-chart-series>
+              <kendo-chart-series-item type="line" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" >
+              </kendo-chart-series-item>
+              <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'">
+              </kendo-chart-series-item>
+            </kendo-chart-series>
+      </kendo-chart>
+  
+      <div class="mt-4">
+        <div class="row row-custom">
+          <div class="col" *ngFor="let item of dates" [ngStyle]="{'background-color': isToday(item.date) ? '#FFBF00' : 'white'}" (click)="onDate($event,item?.date)">
+           <h6 class="mt-1"> {{ item?.day }}</h6>
+           <p> {{ item?.date }}</p>
+          </div>
+        </div>
+      </div>
+  
+  </div>
+  </div>

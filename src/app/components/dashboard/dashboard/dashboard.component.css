@@ -1,0 +1,61 @@
+.col {
+    border: 1px solid black;
+    text-align: center;
+    height: 60px;
+    cursor: pointer;
+  }
+
+.row-custom {
+    margin-left:50px;
+    width: 94%;
+    padding: 10px;
+  }
+
+  .my-datepicker {
+    width: 250px; 
+    margin-left:160px;
+  }
+
+  .customFont{
+    margin-left: 170px;
+  }
+
+  .custom-button {
+    background-color: #007bffe0;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    width:100px;
+    height:35px;
+  }
+  
+
+.custom-col{
+  margin-top:2.5%;
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gauges-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+::ng-deep kendo-circulargauge path {
+  stroke-width: 13;
+}
+
+.my-template {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.customHeading{
+  font-family: Arial, sans-serif;
+  text-align: center;
+  font-weight: bold;
+}
