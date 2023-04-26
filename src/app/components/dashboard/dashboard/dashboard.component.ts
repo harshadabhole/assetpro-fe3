@@ -1,13 +1,19 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { SiteService } from 'src/app/shared/services/site.service';
+import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
+
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  providers:[DatePipe]
 })
 export class DashboardComponent implements OnInit {
   last7DaysDates:any=[];
   dates:any;
+  date:any;
   currentDate:any;
   daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   startDate:any;
@@ -15,39 +21,38 @@ export class DashboardComponent implements OnInit {
   label:any;
   label1:any;
   label2:any;
+  selectedSite:any;
   categories:any;
   clickedDate: any;
   data1:any=[];
   data2:any=[];
   isClicked:boolean=false;
   loading:boolean=false;
-  value = 75;
+  onlineCount:any;
+  offlineCount:any;
   value1=5;
   value2=15;
-  scaleSettings = {
-    min: 0,
-    max: 100,
-    majorUnit: 20,
-    minorUnit: 10,
+  faultCodeByCharger: any=0;
+  unitCounts: any=[];
+  title: any;
   
-  };
-  scaleSettings1 = {
-    min: 0,
-    max: 10,
-    majorUnit: 20,
-    minorUnit: 10,
-  };
-  scaleSettings2 = {
-    min: 0,
-    max: 20,
-    majorUnit: 20,
-    minorUnit: 10,
-  };
-
-  constructor() { }
+  constructor(
+    private datePipe: DatePipe,
+    private _siteService:SiteService
+    ) { 
+      this.loading=true;
+      this._siteService.updatedSiteId.subscribe((res: any) => {
+        this.selectedSite = this._siteService.getselectedSite();
+        this.getUnitCount();
+        this.getFaultCodeByCharger();
+      })
+    }
+   
 
   ngOnInit() {
     this.currentDate = new Date();
+    this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.title='By Charger'
     this.getLastSevenDays();
     this.categories=['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','12:00','13:00','14:00','15:00','16:00', '17:00', '18:00', '19:00','20:00','21:00','22:00','23:00'];
     this.data1=[
@@ -88,20 +93,20 @@ export class DashboardComponent implements OnInit {
       { category: '20:00', value2: 13.5}
     ];
     
-    this.label=`Units ${this.value}/${ this.scaleSettings.max}`;
-    this.label1=`Fault Code ${this.value1}/${ this.scaleSettings1.max}`;
-    this.label2=`Chargers ${this.value2}/${ this.scaleSettings2.max}`
+    this.label=`${this.offlineCount} offline`;
+     this.label1=`Fault Code By Charger ${this.faultCodeByCharger}`;
+    // this.label2=`Chargers ${this.value2}/${ this.scaleSettings2.max}`
   }
 
   getLastSevenDays()
   {
+   // this.loading=true;
     this.last7DaysDates=[];
     this.dates=[];
-    for (let i = 6; i >= 0; i--) {
+    for (let i = 6; i >= 0; i--) 
+    {
         const day = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - i);
         this.last7DaysDates.push(day);
-     
-      
     }
 
     this.last7DaysDates.sort((a:any, b:any) => a - b);
@@ -118,6 +123,7 @@ export class DashboardComponent implements OnInit {
       }
       this.dates.push(xxx)
     });
+   // this.loading=false;
   }
 
 
@@ -136,7 +142,6 @@ export class DashboardComponent implements OnInit {
      this.clickedDate=new Date(`${xx[2]}-${xx[0]}-${xx[1]}`);
       this.loading=true;
       this.getLastSevenDays();
-      this.loading=false;
    }
 
    onChangeStart(value: Date): void {
@@ -160,7 +165,45 @@ export class DashboardComponent implements OnInit {
 
   onSearch(event:any)
   {
+    this.loading=true;
     this.getLastSevenDays()
+  }
+
+  getUnitCount()
+  {
+    this.loading=true;
+    this._siteService.getUnitCount(this.selectedSite).subscribe((res:any)=>{
+      this.onlineCount=res[0].Data[0].onlineCount;
+      this.offlineCount=res[0].Data[0].offlineCount;
+     // console.log("COUNTS----",this.onlineCount, this.offlineCount)
+      this.label=`${this.offlineCount} offline`;
+      this.unitCounts= [
+        { category: 'Online', value: res[0].Data[0].onlineCount },
+        { category: 'Offline', value: res[0].Data[0].offlineCount },
+      ];
+      this.labelContent = this.labelContent.bind(this);
+
+    })
+    this.loading=false
+  }
+
+  getFaultCodeByCharger()
+  {
+    this._siteService.getFaultCodeByCharger(this.selectedSite).subscribe((res:any)=>{
+      console.log("Response----",res[0].Data)
+      this.faultCodeByCharger=res[0].Data[0].TotalCount
+      this.loading=false;
+    })
+  }
+
+  labelContent(args: LegendLabelsContentArgs): string {
+    return `${args.dataItem.value}`;
+  }
+  
+  changeFaultCode(event:any)
+  {
+    console.log("Value--",event.target.checked)
+    this.title= event.target.checked== true?'By Fault Code':'By Charger'
   }
 
 }

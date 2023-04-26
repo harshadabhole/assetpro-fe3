@@ -184,6 +184,7 @@ ngOnInit() {
             this.assetDetails.push(assetDetails)
             this.loading=false;
         }
+        this.loading=false;
       }
       else
       {

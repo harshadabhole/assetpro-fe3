@@ -1,4 +1,11 @@
 .side-bar-container {
+    /* top: 0px;
+    left: 0px;
+    width: 80px;
+    height: 1080px;
+    background: #1D3D57 0% 0% no-repeat padding-box;
+    box-shadow: 0px 0px 6px #00000029;
+    opacity: 1; */
     position: fixed;
     width: 9%;
     border: 1px solid rgba(179,231,255,.33);
@@ -6,7 +13,6 @@
     z-index: 1;
     height: 100%;
     opacity: 1!important;
-    /* top: 0; */
 }
 
 @media (min-width: 768px) {
@@ -23,3 +29,12 @@
     letter-spacing: .46px;
     line-height: 15px;
 }
+
+ul{
+    list-style-type: none;
+}
+li{
+    padding-right: 20%;;
+
+}
+

@@ -15,7 +15,7 @@ import 'hammerjs';
     ReportRoutingModule,
     FormsModule,
     SharedModule,
-    ChartsModule
+    ChartsModule,
   ]
 })
 export class ReportModule { }

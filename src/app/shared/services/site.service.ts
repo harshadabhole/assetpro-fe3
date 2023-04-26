@@ -54,4 +54,12 @@ getMaintenanceStatusReport(data:any):Observable<any>{
     `${this.baseUrl}api/Asset/getMaintenanceStatusReport`,data)
 }
 
+getUnitCount(siteID:any):Observable<any>{
+  return this.http.get<any>(`${this.baseUrl}api/Asset/getUnitCount/${siteID}`)
+}
+
+getFaultCodeByCharger(siteID:any):Observable<any>{
+  return this.http.get<any>(`${this.baseUrl}api/Asset/getFaultCodeByCharger/${siteID}`)
+
+}
 }

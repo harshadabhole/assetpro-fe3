@@ -1,7 +1,7 @@
 <app-spinner *ngIf="loading"></app-spinner>
-<div class="row">
+<div class="row mt-2">
   <div class="col-xl-12">
-    <img src="../../../../assets/images/download.png" height="12" width="12" (click)="generatePDF()"> 
+    <img src="../../../../assets/images/download.png" height="20" width="18" (click)="generatePDF()" style="cursor:pointer;float: right;margin-right:60px;"> 
   </div>
 </div>
 <div *ngIf="showStatusReport" id="content" class="container mt-3" style="border:1px solid rgba(0,0,0,.1);">
@@ -12,7 +12,7 @@
   <div class="mt-1" style="margin-left:10px;font-weight:bold;">Total Assets:&nbsp; <span style="font-weight:normal;">{{total}}</span></div>
   <hr>
  
-  <kendo-chart title="Maintenance Status" style="height: 350px; font-size:20px;">
+  <kendo-chart title="Maintenance Status" style="font-size:20px;">
     <kendo-chart-legend position="bottom" ></kendo-chart-legend>
     <kendo-chart-series>
       <kendo-chart-series-item

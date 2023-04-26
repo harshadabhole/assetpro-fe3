@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
 import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
-// import * as FileSaver from 'file-saver';
-// import * as html2canvas from 'html2canvas';
-// import * as jspdf from 'jspdf';
+import  jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 @Component({
@@ -11,7 +10,7 @@ import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
   styleUrls: ['./show-reports.component.css']
 })
 export class ShowReportsComponent implements OnInit {
-
+  pdfSrc: string;
 showStatusReport:boolean=false;
 showHistoricalReport:boolean=false;
 loading:boolean=false;
@@ -57,8 +56,14 @@ total:any;
 
   generatePDF() 
   {
-    // const pdf = new Blob([document.getElementById('content').innerHTML], { type: 'application/pdf' });
-    // FileSaver.saveAs(pdf, 'html-to-pdf.pdf');
+    const element = document.getElementById('content');
+    html2canvas(element).then((canvas) => {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.setFont('Helvetica Neue');
+      pdf.setFontSize(14);
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
+      pdf.save('report.pdf');
+    });
   }
   
   
