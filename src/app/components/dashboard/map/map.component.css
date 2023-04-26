@@ -5,9 +5,16 @@
   width: 100%;
 } */
 
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  }
+
 .match-parent {
-    width: 50%;
-    height: 50%;
+    /* width: 50%; */
+    height: 100%;
   }
 
   .marker {
