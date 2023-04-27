@@ -3,6 +3,10 @@ import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
 import  jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
 
 @Component({
   selector: 'app-show-reports',
@@ -56,14 +60,26 @@ total:any;
 
   generatePDF() 
   {
-    const element = document.getElementById('content');
-    html2canvas(element).then((canvas) => {
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.setFont('Helvetica Neue');
-      pdf.setFontSize(14);
-      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
-      pdf.save('report.pdf');
+    const documentDefinition = {
+          defaultStyle: {
+        font: 'Helvetica Neue',
+        fontSize : 14
+      },
+      pageSize: 'A4',
+      content: []
+    };
+
+    html2canvas(document.querySelector('#content')).then(canvas => {
+      const imgData = canvas.toDataURL('image/png'); // Convert the canvas to a data URL
+      documentDefinition.content.push({
+        image: imgData, // Add the image to the document definition
+        width: 550 // Set the width of the image
+      });
+    
+      // Generate the PDF document
+      pdfMake.createPdf(documentDefinition).download('report.pdf');
     });
+
   }
   
   
