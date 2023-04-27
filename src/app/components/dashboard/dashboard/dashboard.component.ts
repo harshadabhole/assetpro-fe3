@@ -28,11 +28,12 @@ export class DashboardComponent implements OnInit {
   data2:any=[];
   isClicked:boolean=false;
   loading:boolean=false;
-  onlineCount:any;
-  offlineCount:any;
+  onlineCount:any=0;
+  offlineCount:any=0;
   value1=5;
   value2=15;
   faultCodeByCharger: any=0;
+  faultCodeByFaultCode: any=0;
   unitCounts: any=[];
   title: any;
   

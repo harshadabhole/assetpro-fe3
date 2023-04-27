@@ -1,20 +1,9 @@
-<div class="h-100">
-
-      <app-header></app-header>
-  
-  <div class="row" style="margin-top: 4.5rem; margin-left:0px;margin-right:0px;height: 100%;">
-    <div class="col-1" style="padding: 0px;">
-      <app-side-nav></app-side-nav>
-     </div>
-     <div class="col-11" style="background-color: #f8fdff;">
-      <router-outlet ></router-outlet>
-      
-     <!-- </div> -->
-     </div>
+<div style="display: flex; height: 100%;">
+  <app-side-nav></app-side-nav>
+  <div style="display: flex;flex-direction: column;flex: 1 1 auto;background-color:white;">
+    <app-header></app-header>
+    <div style="margin-top:70px; flex: 1 1 auto;">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
-
-
-
-
-
