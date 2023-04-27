@@ -14,8 +14,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { ReportModule } from './components/report/report.module';
 import { ChartsModule } from '@progress/kendo-angular-charts';
-import { LayoutModule } from '@progress/kendo-angular-layout';
-import { ProgressBarModule } from '@progress/kendo-angular-progressbar';
 import 'hammerjs';
 
 @NgModule({
@@ -36,8 +34,6 @@ import 'hammerjs';
     NgMultiSelectDropDownModule.forRoot(),
     DashboardModule,
     ReportModule,
-    LayoutModule,
-    ProgressBarModule,
     LabelModule,
   ],
   providers: [SiteService],

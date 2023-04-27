@@ -86,8 +86,15 @@
       <div class="chart-heading col-4 mt-2">
           Power Usage
       </div>
-      <div class="col-5 mt-2">
-        
+      <div class="col-2 mt-2"></div>
+      <div class="col-2 mt-2" style="float: right;">
+        <input type="date" class="custom-dates" [value]="date" (change)="onChangeStart($event)">
+      </div>
+      <div class="col-2 mt-2">
+        <input type="date" class="custom-dates" [value]="date" [max]="date" (change)="onChangeEnd($event)">
+      </div>
+      <div class="col-2 mt-2">
+        <button type="button" class="btn btn-primary search-button w-50 mt-2 ml-5">Search</button>
       </div>
   </div>
   <kendo-chart style="height: 300px; font-size:14px;">
@@ -109,23 +116,66 @@
 
 </div>
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-5">
-          <app-map></app-map>
-        </div>
-        <div class="col-1"></div>
-        <div class="col-5 unit-counts">
-             <div class="row">
-                <div class="col-6 unit-count-headings">Fault Codes
-                  <div class="list-details">
 
+<div class="mt-4">
+  <div class="row">
+      <div class="col-6">
+          <app-map></app-map>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-5 unit-counts">
+        <div class="row">
+              <div class="col-6 unit-count-headings">Fault Codes
+               <div class="row list-details mt-4">
+                  <div class="col-2 list-details-image p-0 m-0">
+                    <img class="images" src="../../../../assets/images/FaultCode.png">
+                  </div>
+                  <div class="col-7 list-details-text">
+                    <div class="mt-2 text-container" style="font-size: 12px;white-space: nowrap;">
+                      Fault Code Types
+                    </div>
+                  </div>
+                  <div class="col-3 mt-2">{{faultCodeByFaultCode}}</div>
+               </div>
+               <div class="row list-details mt-4">
+                <div class="col-2 list-details-image p-0 m-0">
+                  <img class="images" src="../../../../assets/images/Charger.png">
+                </div>
+                <div class="col-7 list-details-text">
+                  <div class="mt-2 text-container" style="font-size: 12px;">
+                    Chargers
                   </div>
                 </div>
-                <div class="vertical-line"></div>
-                <div class="col-6 unit-count-headings">Communications</div>
-                <div class="horizontal-line"></div>
+                <div class="col-3 mt-2">{{faultCodeByCharger}}</div>
              </div>
-        </div>
-    </div>
+              </div>
+              <div class="vertical-line"></div>
+              <div class="col-6 unit-count-headings">Communications
+                <div class="row list-details mt-4">
+                  <div class="col-2 list-details-image p-0 m-0">
+                    <img class="images" src="../../../../assets/images/online.png">
+                  </div>
+                  <div class="col-7 list-details-text">
+                    <div class="mt-2 text-container" style="font-size: 12px;">
+                      Online Units
+                    </div>
+                  </div>
+                  <div class="col-3 mt-2" style="color:green;">{{onlineCount}}</div>
+               </div>
+               <div class="row list-details mt-4">
+                <div class="col-2 list-details-image p-0 m-0">
+                  <img class="images" src="../../../../assets/images/offline.png">
+                </div>
+                <div class="col-7 list-details-text">
+                  <div class="mt-2 text-container" style="font-size: 12px;">
+                    Offline Units
+                  </div>
+                </div>
+                <div class="col-3 mt-2" style="color:red;">{{offlineCount}}</div>
+             </div>
+              </div>
+              <div class="horizontal-line"></div>
+           </div>
+      </div>
+  </div>
 </div>

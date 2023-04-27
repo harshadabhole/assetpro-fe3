@@ -5,7 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ReportModule } from './components/report/report.module';
 
 const routes: Routes = [ 
-  { path: '**', redirectTo: 'dashboard'}  ,
+  // { path: '**', redirectTo: 'dashboard'}  ,
 { path: 'dashboard', component: HomeComponent, loadChildren: ()=>DashboardModule },
 { path: 'report', component: HomeComponent, loadChildren: ()=>ReportModule },
 
