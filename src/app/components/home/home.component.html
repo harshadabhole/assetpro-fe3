@@ -1,10 +1,9 @@
-<div class="h-100">
+<div style="display: flex; height: 100%;">
   <app-side-nav></app-side-nav>
-</div>
-
-<div style="margin-left:60px;">
-  <app-header></app-header>
-  <div>
-    <router-outlet ></router-outlet>
+  <div style="display: flex;flex-direction: column;flex: 1 1 auto;background-color:white;">
+    <app-header></app-header>
+    <div style="margin-top:70px; flex: 1 1 auto;">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

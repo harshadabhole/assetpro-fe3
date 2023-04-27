@@ -1,9 +1,15 @@
 .chart-div{
 height: 380px;
-width:101%;
 background: #FFFFFF 0% 0% no-repeat padding-box;
 box-shadow: 0px 0px 15px #0000001A;
 opacity: 1;
+margin-left:20px;
+margin-right: 20px;
+}
+
+.map-unit-div{
+margin-left:20px;
+margin-right: 20px;
 }
 
 .chart-heading{
