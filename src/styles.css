@@ -12,5 +12,5 @@
 /* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
 
 .mat-progress-spinner circle, .mat-spinner circle {
-  stroke: rgb(224, 87, 110)!important;
+  stroke: #1396d3b2!important;
 }
