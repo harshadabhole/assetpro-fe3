@@ -1,7 +1,6 @@
 .side-nav-container{
     display: flex; 
-    /* height: 100%; */
-    position: relative;
+    height: 100%;
 }
 
 .header-container{

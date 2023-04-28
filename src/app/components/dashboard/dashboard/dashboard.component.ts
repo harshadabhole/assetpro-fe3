@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { SiteService } from 'src/app/shared/services/site.service';
 import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -36,7 +35,7 @@ export class DashboardComponent implements OnInit {
   faultCodeByFaultCode: any=0;
   unitCounts: any=[];
   title: any;
-  
+
   constructor(
     private datePipe: DatePipe,
     private _siteService:SiteService
@@ -44,8 +43,15 @@ export class DashboardComponent implements OnInit {
       this.loading=true;
       this._siteService.updatedSiteId.subscribe((res: any) => {
         this.selectedSite = this._siteService.getselectedSite();
-        this.getUnitCount();
-        this.getFaultCodeByCharger();
+        if(this.selectedSite != '')
+        {
+          this.loading=true;
+          this.getUnitCount();
+          this.getFaultCodeByCharger();
+          this.getPowerUsage();
+          this.categories=['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','12:00','13:00','14:00','15:00','16:00', '17:00', '18:00', '19:00','20:00','21:00','22:00','23:00'];
+        }
+        this.loading=false;
       })
     }
    
@@ -54,54 +60,11 @@ export class DashboardComponent implements OnInit {
     this.currentDate = new Date();
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.title='By Charger'
-    this.getLastSevenDays();
-    this.categories=['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','12:00','13:00','14:00','15:00','16:00', '17:00', '18:00', '19:00','20:00','21:00','22:00','23:00'];
-    this.data1=[
-      { category: '00:00', value1: 0},
-      { category: '01:00', value1: 0},
-      { category: '02:00', value1: 1},
-      { category: '03:00', value1: 10},
-      { category: '04:00', value1: 13},
-      { category: '05:00', value1: 9},
-      { category: '06:00', value1: 10},
-      { category: '07:00', value1: 5},
-      { category: '08:00', value1: 0},
-      { category: '09:00', value1: 4},
-      { category: '10:00', value1: 19},
-      { category: '11:00', value1: 17},
-      { category: '12:00', value1: 15},
-      { category: '13:00', value1: 20},
-      { category: '14:00', value1: 4},
-      { category: '15:00', value1: 15},
-      { category: '16:00', value1: 5 },
-      { category: '17:00', value1: 10 },
-      { category: '18:00', value1: 15 },
-      { category: '19:00', value1: 25.8 },
-      { category: '20:00', value1: 13},
-      { category: '21:00', value1: 10},
-      { category: '22:00', value1: 15},
-      { category: '23:00', value1: 8},
-    ];
-    this.data2=[
-      { category: '00:00', value2: 5},
-      { category: '04:00', value2: 8},
-      { category: '10:00', value2: 20},
-      { category: '13:00', value2: 25},
-      { category: '16:00', value2: 4 },
-      { category: '17:00', value2: 6 },
-      { category: '18:00', value2: 8 },
-      { category: '19:00', value2: 10 },
-      { category: '20:00', value2: 13.5}
-    ];
-    
-    this.label=`${this.offlineCount} offline`;
-     this.label1=`Fault Code By Charger ${this.faultCodeByCharger}`;
-    // this.label2=`Chargers ${this.value2}/${ this.scaleSettings2.max}`
+    this.getLastSevenDays(); 
   }
 
   getLastSevenDays()
   {
-   // this.loading=true;
     this.last7DaysDates=[];
     this.dates=[];
     for (let i = 6; i >= 0; i--) 
@@ -124,7 +87,7 @@ export class DashboardComponent implements OnInit {
       }
       this.dates.push(xxx)
     });
-   // this.loading=false;
+  
   }
 
 
@@ -155,13 +118,21 @@ export class DashboardComponent implements OnInit {
    
   }
 
-  onChangeEnd(value: Date): void {
-    let x=new Date(value);
-    const year=x.getFullYear();
-    const month=x.getMonth();
-    const day=x.getDate();
+  onChangeDate(value: Date): void {
+    let today=new Date(value);
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
     this.endDate=`${year}-${month}-${day}`;
-    console.log("EndDate---",this.endDate)
+    const data={
+      SiteID:this.selectedSite,
+      date:this.endDate
+    }
+    this._siteService.getPowerUsage(data).subscribe((res:any)=>{
+      console.log("Chart Respone----",res[0].Data)
+      this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
+      this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+    })
   }
 
   onSearch(event:any)
@@ -176,8 +147,6 @@ export class DashboardComponent implements OnInit {
     this._siteService.getUnitCount(this.selectedSite).subscribe((res:any)=>{
       this.onlineCount=res[0].Data[0].onlineCount;
       this.offlineCount=res[0].Data[0].offlineCount;
-     // console.log("COUNTS----",this.onlineCount, this.offlineCount)
-      this.label=`${this.offlineCount} offline`;
       this.unitCounts= [
         { category: 'Online', value: res[0].Data[0].onlineCount },
         { category: 'Offline', value: res[0].Data[0].offlineCount },
@@ -205,6 +174,23 @@ export class DashboardComponent implements OnInit {
   {
     console.log("Value--",event.target.checked)
     this.title= event.target.checked== true?'By Fault Code':'By Charger'
+  }
+
+  getPowerUsage()
+  {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    const data={
+      SiteID:this.selectedSite,
+      date:formattedDate
+    }
+    this._siteService.getPowerUsage(data).subscribe((res:any)=>{
+      this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
+      this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+    })
   }
 
 }
