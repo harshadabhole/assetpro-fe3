@@ -13,4 +13,6 @@
 .router-container{
     margin-top:70px; 
     flex: 1 1 auto;
+    height: 100%;
+    overflow: scroll;
 }

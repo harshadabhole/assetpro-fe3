@@ -6,6 +6,7 @@
     height: 750px;
     opacity: 1!important;
     flex: 0 0 auto;
+    height: -webkit-fill-available;
 }
 
 @media (min-width: 768px) {
