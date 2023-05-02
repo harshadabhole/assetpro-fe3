@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
           this.getUnitCount();
           this.getFaultCodeByCharger();
           this.getPowerUsage();
-          this.categories=['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','12:00','13:00','14:00','15:00','16:00', '17:00', '18:00', '19:00','20:00','21:00','22:00','23:00'];
+          // this.categories=['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','12:00','13:00','14:00','15:00','16:00', '17:00', '18:00', '19:00','20:00','21:00','22:00','23:00'];
         }
         this.loading=false;
       })
@@ -125,11 +125,12 @@ export class DashboardComponent implements OnInit {
     this.endDate=`${year}-${month}-${day}`;
     const data={
       SiteID:this.selectedSite,
-      date:this.endDate
+      date:"2023-05-02"
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{
       this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
       this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+      this.categories=res[0].Data.map((obj:any)=>{obj.Hour});
       setInterval( async()=> {this.showSpinner=false;},800)
     })
   }
@@ -183,6 +184,7 @@ export class DashboardComponent implements OnInit {
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{
       this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
       this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+      this.categories=res[0].Data.map((obj:any)=>{obj.Hour});
       setInterval( async()=> {this.showSpinner=false;},800)
     })
   }
