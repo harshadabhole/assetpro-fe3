@@ -1,8 +1,6 @@
 import { Component,OnInit} from '@angular/core';
 import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
-import  jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;

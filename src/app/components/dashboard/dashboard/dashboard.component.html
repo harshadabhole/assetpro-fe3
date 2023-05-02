@@ -1,121 +1,4 @@
 <app-spinner *ngIf="loading"></app-spinner>
-<!-- <app-map></app-map> -->
-
-<!-- <div class="container">
-  <div class="mt-2">
-    <div class="row" style="white-space: nowrap;">
-      <div class="col-4" style="display: inline-block;">
-        <p>Select Start Date:</p>
-        <input type="date" class="my-input" [value]="date" (change)="onChangeStart($event)">
-      </div>
-      <div class="col-4" style="display: inline-block;">
-        <p>Select End Date:</p>
-        <input type="date" class="my-input" [value]="date" [max]="date" (change)="onChangeEnd($event)">
-      </div>
-      <div class="col-4 mt-4" style="display: inline-block;">
-        <button class="btn btn-primary w-50" (click)="onSearch($event)">Search</button>
-      </div>
-    </div>
-  </div>
-
-    <div class="mt-2" style="height:30%;">
-      <kendo-chart>
-          <kendo-chart-title text="Power Usage"  font="24pt sans-serif" color="#007AB2"></kendo-chart-title>
-          <kendo-chart-legend position="top" ></kendo-chart-legend>
-          <kendo-chart-category-axis>
-            <kendo-chart-category-axis-item [categories]="categories" [labels]="{ rotation: -90,font: '16px Arial' }" ></kendo-chart-category-axis-item>
-          </kendo-chart-category-axis>
-          <kendo-chart-value-axis>
-              <kendo-chart-value-axis-item  [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
-              <kendo-chart-value-axis-item  [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }"></kendo-chart-value-axis-item>
-            </kendo-chart-value-axis>
-          <kendo-chart-series>
-              <kendo-chart-series-item type="line" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" >
-              </kendo-chart-series-item>
-              <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'">
-              </kendo-chart-series-item>
-            </kendo-chart-series>
-      </kendo-chart>
-
-  </div>
-
-  <div class="mt-3">
-    <div class="row" >
-      <div class="col-md-6">
-        <div class="card" style="width: 18rem; height:70%;">
-            <h6 class="card-header text-center" style="font-size: 16px; color:black;">Communication</h6>
-              <kendo-chart title="Unit Count" style="height: 350px; font-size:20px;">
-                <kendo-chart-legend position="bottom" ></kendo-chart-legend>
-                <kendo-chart-series>
-                  <kendo-chart-series-item 
-                    type="donut" 
-                    [data]="unitCounts" 
-                    field="value"
-                    categoryField="category" 
-                    valueField="value"
-                    [labels]="{ visible: true, content: labelContent, background: 'none', font: { weight: 'bold', size: '20px', color: 'black' } }"
-                   >
-                  </kendo-chart-series-item>
-                </kendo-chart-series>
-              </kendo-chart>
-          </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="card" style="width: 18rem; height:16em;">
-          <div class="card-header" style="display: inline-block;">
-            <h6 class="text-center">Fault Code</h6>
-            <label class="switch">
-              <input type="checkbox" (click)="changeFaultCode($event)">
-              <span class="slider round"></span>
-            </label>
-            <span style="float: right; margin-right:5px;">
-              {{title}}
-            </span>
-          </div>
-              <div class="mt-2">
-              </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="chart-div mt-3">
-  <div class="row">
-      <div class="chart-heading col-4 mt-2">
-          Power Usage
-      </div>
-      <div class="col-2 mt-2"></div>
-      <div class="col-2 mt-2" style="float: right;">
-        <input type="date" class="custom-dates" [value]="date" (change)="onChangeStart($event)">
-      </div>
-      <div class="col-2 mt-2">
-        <input type="date" class="custom-dates" [value]="date" [max]="date" (change)="onChangeEnd($event)">
-      </div>
-      <div class="col-2 mt-2">
-        <button type="button" class="btn btn-primary search-button w-50 mt-2 ml-5">Search</button>
-      </div>
-  </div>
-  <kendo-chart style="height: 300px; font-size:14px;">
-    <kendo-chart-legend position="top" ></kendo-chart-legend>
-    <kendo-chart-category-axis>
-      <kendo-chart-category-axis-item [categories]="categories" [labels]="{ rotation: -90,font: '14px Montserrat' }" ></kendo-chart-category-axis-item>
-    </kendo-chart-category-axis>
-    <kendo-chart-value-axis>
-        <kendo-chart-value-axis-item  [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
-        <kendo-chart-value-axis-item  [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }"></kendo-chart-value-axis-item>
-      </kendo-chart-value-axis>
-    <kendo-chart-series>
-        <kendo-chart-series-item type="line" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" >
-        </kendo-chart-series-item>
-        <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'">
-        </kendo-chart-series-item>
-      </kendo-chart-series>
-</kendo-chart>
-
-</div>
-
 
 <div class="map-unit-div mt-4">
   <div class="row" style="padding-right: 15px;">
@@ -178,4 +61,31 @@
            </div>
       </div>
   </div>
+</div>
+
+<div class="chart-div mt-4">
+  <div class="row">
+      <div class="chart-heading col-6 mt-2">
+          Power Usage
+      </div>
+      <div class="col-2 mt-2"></div>
+      <div class="col-4 mt-2 pr-5">
+        <input type="date" class="custom-dates" [value]="date" [max]="date" (change)="onChangeDate($event)">
+      </div>
+  </div>
+  <kendo-chart style="height: 300px; font-size:14px;">
+    <kendo-chart-legend position="top" ></kendo-chart-legend>
+    <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item [categories]="categories" [majorGridLines]="{visible: false}" [labels]="{ rotation: -90,font: '14px Montserrat' }"></kendo-chart-category-axis-item>
+    </kendo-chart-category-axis>
+    <kendo-chart-value-axis>
+      <kendo-chart-value-axis-item [name]="'maxKwAxis'" [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
+      <kendo-chart-value-axis-item [name]="'numChargersAxis'" [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }" ></kendo-chart-value-axis-item>
+    </kendo-chart-value-axis>
+    <kendo-chart-series>
+      <kendo-chart-series-item [line]="{ style: 'smooth' }" type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#ffe135"></kendo-chart-series-item>
+      <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#ADD8E6" [gap]="3"></kendo-chart-series-item>
+    </kendo-chart-series>
+</kendo-chart>
+
 </div>
