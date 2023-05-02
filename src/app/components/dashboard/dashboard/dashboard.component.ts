@@ -27,14 +27,12 @@ export class DashboardComponent implements OnInit {
   data2:any=[];
   isClicked:boolean=false;
   loading:boolean=false;
-  onlineCount:any=0;
-  offlineCount:any=0;
-  value1=5;
-  value2=15;
-  faultCodeByCharger: any=0;
-  faultCodeByFaultCode: any=0;
+  onlineCount:number=0;
+  offlineCount:number=0;
+  faultCodeByCharger: number=0;
+  faultCodeByFaultCode: number=0;
   unitCounts: any=[];
-  title: any;
+  showSpinner: boolean=false;
 
   constructor(
     private datePipe: DatePipe,
@@ -59,7 +57,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.currentDate = new Date();
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    this.title='By Charger'
     this.getLastSevenDays(); 
   }
 
@@ -118,8 +115,10 @@ export class DashboardComponent implements OnInit {
    
   }
 
-  onChangeDate(value: Date): void {
-    let today=new Date(value);
+  onChangeDate(event: any): void 
+  {
+    this.showSpinner=true;
+    let today=new Date(event.target.value);
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
@@ -129,9 +128,9 @@ export class DashboardComponent implements OnInit {
       date:this.endDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{
-      console.log("Chart Respone----",res[0].Data)
       this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
       this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+      setInterval( async()=> {this.showSpinner=false;},800)
     })
   }
 
@@ -160,7 +159,6 @@ export class DashboardComponent implements OnInit {
   getFaultCodeByCharger()
   {
     this._siteService.getFaultCodeByCharger(this.selectedSite).subscribe((res:any)=>{
-      console.log("Response----",res[0].Data)
       this.faultCodeByCharger=res[0].Data[0].TotalCount
       this.loading=false;
     })
@@ -169,15 +167,10 @@ export class DashboardComponent implements OnInit {
   labelContent(args: LegendLabelsContentArgs): string {
     return `${args.dataItem.value}`;
   }
-  
-  changeFaultCode(event:any)
-  {
-    console.log("Value--",event.target.checked)
-    this.title= event.target.checked== true?'By Fault Code':'By Charger'
-  }
 
   getPowerUsage()
   {
+    this.showSpinner=true;
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -185,11 +178,12 @@ export class DashboardComponent implements OnInit {
     const formattedDate = `${year}-${month}-${day}`;
     const data={
       SiteID:this.selectedSite,
-      date:formattedDate
+      date:"2023-04-28"
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{
       this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
       this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+      setInterval( async()=> {this.showSpinner=false;},800)
     })
   }
 
