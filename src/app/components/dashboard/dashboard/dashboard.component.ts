@@ -179,7 +179,7 @@ export class DashboardComponent implements OnInit {
     const formattedDate = `${year}-${month}-${day}`;
     const data={
       SiteID:this.selectedSite,
-      date:"2023-04-28"
+      date:formattedDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{
       this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
