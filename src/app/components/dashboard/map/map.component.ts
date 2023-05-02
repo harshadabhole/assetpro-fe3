@@ -1,123 +1,175 @@
-import { environment } from '../../../../environments/environment';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import * as mapboxgl from 'mapbox-gl';
-import { SiteService } from 'src/app/shared/services/site.service';
+import { Component, OnInit } from '@angular/core';
+import * as L from 'leaflet';
+import 'leaflet.markercluster/dist/leaflet.markercluster.js';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
+import 'leaflet.markercluster';
+import { MarkerClusterGroup } from 'leaflet.markercluster/dist/leaflet.markercluster.js';
+
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  loading:boolean=false;
-  
-  map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/streets-v11';
-  lat = 37.75;
-  lng = -122.41;
-
-  
-
-  constructor() { }
+  private map: L.Map;
+  private markerClusterGroup: MarkerClusterGroup;
 
   ngOnInit() {
-    this.loading=true;
-    const geojson = {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [-77.032, 38.913]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'Washington, D.C.',
-            image : '../../../../assets/images/car.jpg'
-          }
-        },
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [-122.414, 37.776]
-          },
-          properties: {
-            title: 'Mapbox',
-            description: 'San Francisco, California',
-            image : '../../../../assets/images/car.jpg'
-          }
+    this.map = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    this.markerClusterGroup = L.markerClusterGroup();
+    this.addMarkers();
+    
+
+  }
+  
+
+  private addMarkers() {
+    const customIcon = L.icon({
+      iconUrl: '../../../../assets/images/mapbox-icon.png',
+      iconSize: [38, 38],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+      shadowUrl: '../../../../assets/images/mapbox-icon.png',
+      shadowSize: [38, 38],
+      shadowAnchor: [22, 94]
+    });
+
+    const icon1 = L.divIcon({
+      className: 'custom-icon',
+      html: '<div style="display:inline-flex"><div class="bg-marker icon-1"  ><img src="../../../../assets/images/green.png" class="img-style"></img></div><div class="bg-marker icon-2" ><img src="../../../../assets/images/fmd_good_black_24dp.png" class="img-style"></img></div></div>'
+    });
+    
+    const icon2 = L.divIcon({
+      className: 'custom-icon-2',
+      html: '<div style="display:inline-flex"><div class="bg-marker icon-1" ><img src="../../../../assets/images/red.png" class="img-style"></img></div><div class="bg-marker icon-2" ><img src="../../../../assets/images/green.png" class="img-style"></img></div></div>'
+    });
+    // const popup = [L.popup()
+    //   .setLatLng([51.505, -0.09])
+    //   .setContent('Hello, world!')
+    //   .openOn(this.map),
+    //   L.popup()
+    //   .setLatLng([51.505, -0.09])
+    //   .setContent('Hello, Harshada!')
+    //   .openOn(this.map)];
+  
+    const markers = [
+      L.marker([51.5, -0.09], {icon: icon1}).on('click', function(event) {
+        const clickedElement = event.originalEvent.target as HTMLElement;
+        console.log('event 333',clickedElement.classList)
+        console.log('event',clickedElement.classList.contains("icon-1"))
+        if (clickedElement.classList.contains("icon-1")) {
+          // Handle click on icon1
+          L.popup().setContent(`<div style="display:flex; align-items:center;">
+          <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+          <div>
+            <h3>Marker title 1</h3>
+            <p>Marker Description</p>
+          </div>
+        </div>`);
+        } else if (clickedElement.classList.contains("icon-2")) {
+          L.popup().setContent(`<div style="display:flex; align-items:center;">
+          <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+          <div>
+            <h3>Marker title 2</h3>
+            <p>Marker Description</p>
+          </div>
+        </div>`);
+          // Handle click on icon2
         }
-      ]
-    };
-    
-    Object.getOwnPropertyDescriptor(mapboxgl, "accessToken").set(environment.mapbox.accessToken);
-    //   this.map = new mapboxgl.Map({
-    //     container: 'map',
-    //     style: this.style,
-    //     zoom: 3,
-    //     center: [this.lng, this.lat]
-    // });
-    // // Add map controls
-    // for (const feature of geojson.features) {
-    //   // create a HTML element for each feature
-    //   const el = document.createElement('div');
-    //   el.className = 'marker';
-    //   console.log('ellll', el)
+      }),
+      L.marker([51.49, -0.1], {icon: icon2}).on('click', function(event) {
+        console.log('event',event.originalEvent.target)
+        const clickedElement = event.originalEvent.target as HTMLElement;
+        if (clickedElement.classList.contains("icon-1")) {
+          // Handle click on icon1
+        } else if (clickedElement.classList.contains("icon-2")) {
+          // Handle click on icon2
+        }
+      }),
+      L.marker([51.51, -0.07], {icon: icon1}),
+      L.marker([51.5, -0.05], {icon: icon2}),
+      L.marker([51.49, -0.06], {icon: icon1})
+    ];
+    markers.forEach(marker => {
+      
+     
+//       const icon1 = marker.getElement().querySelector('.bg-marker.icon-1');
+// icon1.addEventListener('click', () => {
+//   console.log('click event 1')
+//   // const popup = L.popup().setContent('Popup for icon 1');
+//   marker.bindPopup(`<div style="display:flex; align-items:center;">
+//       <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+//       <div>
+//         <h3>Marker popup title 1</h3>
+//         <p>Marker Description</p>
+//       </div>
+//     </div>`)
+// });
 
-    //   // make a marker for each feature and add it to the map
-    //   new mapboxgl.Marker(el)
-    //     .setLngLat(feature.geometry.coordinates)
-    //     .setPopup(
-    //       new mapboxgl.Popup({ offset: 25 }) // add popups
-    //         .setHTML(
-    //           `<h3>${feature.properties.title}</h3><p>${feature.properties.description}</p>`
-    //         )
-    //     )
-    //     .addTo(this.map);
-    // }
-
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-122.436, 37.773],
-      zoom: 12
+// const icon2 = marker.getElement().querySelector('.bg-marker.icon-2');
+// icon2.addEventListener('click', () => {
+//   console.log('click event 2')
+//   // const popup = L.popup().setContent('Popup for icon 2');
+//   marker.bindPopup(`<div style="display:flex; align-items:center;">
+//       <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+//       <div>
+//         <h3>Marker popup title 2</h3>
+//         <p>Marker Description</p>
+//       </div>
+//     </div>`)
+// });
+      marker.bindPopup(`<div style="display:flex; align-items:center;">
+      <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+      <div>
+        <h3>Marker title</h3>
+        <p>Marker Description</p>
+      </div>
+    </div>`);
     });
-
-    map.on('load', () => {
-      for (const feature of geojson.features) {
-      // Add a marker at the center of the map
-      new mapboxgl.Marker()
-        .setLngLat(feature.geometry.coordinates)
-        .addTo(map);
-
-      // Define a custom marker using an HTML element
-      const el = document.createElement('div');
-      el.className = 'marker';
-      // el.style.backgroundImage = 'url(https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png)';
-      el.style.width = '50px';
-      el.style.height = '50px';
-
-      // Add a custom marker at the Ferry Building in San Francisco
-      new mapboxgl.Marker(el)
-        .setLngLat(feature.geometry.coordinates)
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML(
-              `<div style="display:flex; align-items:center;">
-              <img src="${feature.properties.image}" style=" width:50px; margin-right:10px;">
-              <div>
-                <h3>${feature.properties.title}</h3>
-                <p>${feature.properties.description}</p>
-              </div>
-            </div>`
-            )
-        )
-        .addTo(map);
-      }
+    this.markerClusterGroup.addLayers(markers);
+    this.map.addLayer(this.markerClusterGroup);
+    
+    const icon11 = document.querySelector('.bg-marker.icon-1');
+    console.log('icon11',icon11)
+    icon11.addEventListener('click', () => {
+      console.log('click event 1')
+      // const popup = L.popup().setContent('Popup for icon 1');
+      // marker.bindPopup(`<div style="display:flex; align-items:center;">
+      //     <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+      //     <div>
+      //       <h3>Marker popup title 1</h3>
+      //       <p>Marker Description</p>
+      //     </div>
+      //   </div>`)
     });
     
-    // this.map.addControl(new mapboxgl.NavigationControl());
-    this.loading=false;
+    const icon22 = document.querySelector('.bg-marker.icon-2');
+    console.log('icon22',icon22)
+    icon22.addEventListener('click', () => {
+      console.log('click event 2')
+      // const popup = L.popup().setContent('Popup for icon 2');
+      // marker.bindPopup(`<div style="display:flex; align-items:center;">
+      //     <img src="${"../../../../assets/images/car.jpg"}" style=" width:50px; margin-right:10px;">
+      //     <div>
+      //       <h3>Marker popup title 2</h3>
+      //       <p>Marker Description</p>
+      //     </div>
+      //   </div>`)
+    });
+    
+  }
+   popup1() {
+    console.log('click event 1 func')
+  }
+   popup2() {
+    console.log('click event 2 func')
   }
 }
