@@ -137,3 +137,19 @@ margin-right: 20px;
   opacity: 1;
 }
 
+::ng-deep .k-chart-tooltip {
+  background-color: #f8f8f8f8; 
+  border: 1px solid #ccc; 
+  font-size: 10px;
+  height:70px;
+  width:100%;
+}
+
+.spinner-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 280px;
+  margin-left:20px;
+  margin-right: 20px;
+}
