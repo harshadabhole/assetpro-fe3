@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener,OnInit } from '@angular/core';
 import { SiteService } from 'src/app/shared/services/site.service';
 
 @Component({
@@ -7,6 +7,14 @@ import { SiteService } from 'src/app/shared/services/site.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @HostListener('window:beforeunload', ['$event'])
+beforeUnloadHandler(event) {
+  localStorage.removeItem('companyID');
+  localStorage.removeItem('companyName');
+  localStorage.removeItem('siteID');
+  localStorage.removeItem('siteName')
+}
+
   public listItems: any = [];
   public deptList: any = [];
   public companyItems: any = [];
@@ -20,7 +28,12 @@ export class HeaderComponent implements OnInit {
   showCompanyList: boolean;
   constructor(
     private _siteService: SiteService,
-  ) { }
+  ) 
+  {
+    this.selectedOption = localStorage.getItem('companyName') != null ? localStorage.getItem('companyName') :'';
+    this.selectDeptOption = localStorage.getItem('siteName') != null ? localStorage.getItem('siteName') :''
+  }
+
 
   ngOnInit() {
     this.getAllCompany();
@@ -73,7 +86,9 @@ onChangeCompany(value:string)
   this.selectedOption=value;
   this.selectDeptOption='';
   const x=this.companyList.find((s:any) => s.Name === value);
-  this.selectedCompany=x.ID
+  this.selectedCompany=x.ID;
+  localStorage.setItem('companyID',x.ID)
+  localStorage.setItem('companyName',x.Name)
   this.getAllSites(this.selectedCompany)
 
 }
