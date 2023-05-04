@@ -29,10 +29,11 @@ export class DashboardComponent implements OnInit {
   loading:boolean=false;
   onlineCount:number=0;
   offlineCount:number=0;
-  faultCodeByCharger: number=0;
-  faultCodeByFaultCode: number=0;
   unitCounts: any=[];
   showSpinner: boolean=false;
+  title: string='By Charger';
+  faultCodes: any=[];
+  showFaultCode: boolean=false;
 
   constructor(
     private datePipe: DatePipe,
@@ -44,10 +45,10 @@ export class DashboardComponent implements OnInit {
         if(this.selectedSite != '')
         {
           this.loading=true;
+          this.showFaultCode=true;
           this.getUnitCount();
           this.getFaultCodeByCharger();
           this.getPowerUsage();
-          // this.categories=['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','12:00','13:00','14:00','15:00','16:00', '17:00', '18:00', '19:00','20:00','21:00','22:00','23:00'];
         }
         this.loading=false;
       })
@@ -159,9 +160,19 @@ export class DashboardComponent implements OnInit {
 
   getFaultCodeByCharger()
   {
-    this._siteService.getFaultCodeByCharger(this.selectedSite).subscribe((res:any)=>{
-      this.faultCodeByCharger=res[0].Data[0].TotalCount
+    this._siteService.getFaultCodeByCharger('BD1D9592-F490-ED11-AA20-02E21D877817').subscribe((res:any)=>{
+      this.faultCodes=res[0].Data
       this.loading=false;
+      this.showFaultCode=false;
+    })
+  }
+
+  getFaultCodeByFaultCode()
+  {
+    this._siteService.getFaultCodeByFaultCode('BD1D9592-F490-ED11-AA20-02E21D877817').subscribe((res:any)=>{
+      this.faultCodes=res[0].Data;
+      this.loading=false;
+      this.showFaultCode=false;
     })
   }
 
@@ -189,4 +200,18 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  onToggle(event:any)
+  {
+    this.showFaultCode=true;
+    if(event.target.checked == false)
+    {
+      this.title='By Fault Code';
+      this.getFaultCodeByFaultCode();
+    }
+    else
+    {
+      this.title='By Charger';
+      this.getFaultCodeByCharger();
+    }
+  }
 }
