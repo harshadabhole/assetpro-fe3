@@ -11,10 +11,13 @@ export class SiteService {
   baseUrl: string = "http://localhost:8080/";
   constructor(private http: HttpClient) { }
   private selectedSite: any = '';
+  private selectedCompany: any = '';
 
   private updateSiteID = new BehaviorSubject('');
   updatedSiteId = this.updateSiteID.asObservable();
 
+  private updateCompanyID = new BehaviorSubject('');
+  updatedCompanyId = this.updateCompanyID.asObservable();
 
 
   changeSite(siteId:string) {
@@ -24,6 +27,15 @@ export class SiteService {
   getselectedSite(){
     return this.selectedSite;
   }
+
+  changeCompany(companyId:string) {
+    console.log('IN OBSERVABLE---',companyId)
+    this.selectedCompany = companyId;
+        this.updateCompanyID.next(companyId);
+    }
+  getselectedCompany(){
+      return this.selectedCompany;
+    }
 
   getAllSites( companyId:any): Observable<any> {
     return this.http.get<any>(

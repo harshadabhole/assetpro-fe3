@@ -37,8 +37,13 @@ public cover =
   // dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
+  selectedCompany: any;
   
-  constructor( private _siteService: SiteService,) {
+  constructor( private _siteService: SiteService,) 
+  {
+    this._siteService.updatedCompanyId.subscribe((res: any) => {
+      this.selectedCompany = this._siteService.getselectedCompany();
+    })
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();
       console.log('selectedSite',this.selectedSite);

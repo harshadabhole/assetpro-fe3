@@ -1,108 +1,126 @@
-<app-spinner *ngIf="loading"></app-spinner>
-
-<div class="map-unit-div mt-4">
-  <div class="row" style="padding-right: 15px;">
-      <div class="col-7">
-          <app-map></app-map>
+<div *ngIf="selectedSite == ''" class="overlay" >
+    <div class="text-div text-center" style="margin-top: 30vh;; margin-left:63vh;">
+      <div>
+        <h5 *ngIf="selectedCompany == '' ">Please Select Company</h5>
+        <h5 *ngIf="selectedCompany != '' ">Please Select Site</h5>
       </div>
-      <div class="col-5 unit-counts">
-        <div class="row">
-              <div class="col-6 unit-count-headings">Fault Codes
-               <div class="mt-4" >
-                <span style="font-size: 13px;margin-left:80px;">{{title}}</span>
-                <span style="float:right;">
-                  <label class="switch">
-                    <input type="checkbox" checked (click)="onToggle($event)">
-                    <span class="slider round"></span>
-                  </label>
-                </span>
-                <ng-container *ngIf="!showFaultCode">
-                  <div class="mt-2 table-wrapper" *ngIf="faultCodes.length > 0">
-                    <table class="table table-bordered table-striped">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Count</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let element of faultCodes">
-                          <td>{{element?.Name}}</td>
-                          <td>{{element?.Count}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="showFaultCode">
-                  <div class="custom-spinner">
-                    <mat-progress-spinner color="accent" mode="indeterminate" diameter="55"></mat-progress-spinner>
-                  </div>
-                </ng-container>
-               </div>
-              </div>
-              <div class="vertical-line"></div>
-              <div class="col-6 unit-count-headings">Communications
-                <div class="row list-details" style="margin-top:100px;">
+    </div>
+  </div>
+<div class="content">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <div   class="map-unit-div mt-4">
+    <div class="row" style="padding-right: 15px;">
+        <div class="col-7">
+            <app-map></app-map>
+        </div>
+        <div class="col-5 unit-counts">
+          <div class="row">
+                <div class="col-6 unit-count-headings">Fault Codes
+                 <div class="mt-4" >
+                  <span style="font-size: 13px;margin-left:80px;">{{title}}</span>
+                  <span style="float:right;">
+                    <label class="switch">
+                      <input type="checkbox" checked (click)="onToggle($event)">
+                      <span class="slider round"></span>
+                    </label>
+                  </span>
+                  <ng-container *ngIf="!showFaultCode">
+                    <div class="mt-2 table-wrapper" *ngIf="faultCodes.length > 0">
+                      <table class="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Count</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let element of faultCodes">
+                            <td>{{element?.Name}}</td>
+                            <td>{{element?.Count}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="showFaultCode">
+                    <div class="custom-spinner">
+                      <mat-progress-spinner color="accent" mode="indeterminate" diameter="55"></mat-progress-spinner>
+                    </div>
+                  </ng-container>
+                 </div>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="col-6 unit-count-headings">Communications
+                  <div class="row list-details" style="margin-top:100px;">
+                    <div class="col-2 list-details-image p-0 m-0">
+                      <img class="images" src="../../../../assets/images/online.png">
+                    </div>
+                    <div class="col-7 list-details-text">
+                      <div class="mt-2 text-container" style="font-size: 12px;">
+                        Online Units
+                      </div>
+                    </div>
+                    <div class="col-3 mt-2" style="color:green;">{{onlineCount}}</div>
+                 </div>
+                 <div class="row list-details mt-5">
                   <div class="col-2 list-details-image p-0 m-0">
-                    <img class="images" src="../../../../assets/images/online.png">
+                    <img class="images" src="../../../../assets/images/offline.png">
                   </div>
                   <div class="col-7 list-details-text">
                     <div class="mt-2 text-container" style="font-size: 12px;">
-                      Online Units
+                      Offline Units
                     </div>
                   </div>
-                  <div class="col-3 mt-2" style="color:green;">{{onlineCount}}</div>
+                  <div class="col-3 mt-2" style="color:red;">{{offlineCount}}</div>
                </div>
-               <div class="row list-details mt-5">
-                <div class="col-2 list-details-image p-0 m-0">
-                  <img class="images" src="../../../../assets/images/offline.png">
                 </div>
-                <div class="col-7 list-details-text">
-                  <div class="mt-2 text-container" style="font-size: 12px;">
-                    Offline Units
-                  </div>
-                </div>
-                <div class="col-3 mt-2" style="color:red;">{{offlineCount}}</div>
+                <div class="horizontal-line"></div>
              </div>
-              </div>
-              <div class="horizontal-line"></div>
-           </div>
+        </div>
+    </div>
+  </div>
+  
+  <div  class="chart-div mt-4">
+    <div class="row">
+        <div class="chart-heading col-6 mt-2">
+            Power Usage
+        </div>
+        <div class="col-2 mt-2"></div>
+        <div class="col-4 mt-2 pr-5">
+          <input type="date" class="custom-dates" [value]="date" [max]="date" (change)="onChangeDate($event)">
+        </div>
+    </div>
+    <ng-container *ngIf="!showSpinner">
+      <kendo-chart style="height: 300px; font-size:14px;">
+        <kendo-chart-legend position="top" ></kendo-chart-legend>
+        <kendo-chart-tooltip format="{0}" [visible]="true" [shared]="true">
+        </kendo-chart-tooltip>
+        <kendo-chart-category-axis>
+          <kendo-chart-category-axis-item [categories]="categories" [majorGridLines]="{visible: false}" [labels]="{ rotation: -90,font: '14px Montserrat' }"></kendo-chart-category-axis-item>
+        </kendo-chart-category-axis>
+        <kendo-chart-value-axis>
+          <kendo-chart-value-axis-item [name]="'maxKwAxis'" [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
+          <kendo-chart-value-axis-item [name]="'numChargersAxis'" [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }" ></kendo-chart-value-axis-item>
+        </kendo-chart-value-axis>
+          <kendo-chart-series>
+            <kendo-chart-series-item [line]="{ style: 'smooth' }" type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#ffe135"></kendo-chart-series-item>
+            <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#ADD8E6" [gap]="3"></kendo-chart-series-item>
+          </kendo-chart-series>
+    </kendo-chart>
+    </ng-container>
+    <ng-container *ngIf="showSpinner">
+      <div class="spinner-overlay">
+        <mat-progress-spinner color="accent" mode="indeterminate" diameter="90"></mat-progress-spinner>
       </div>
+    </ng-container>
   </div>
 </div>
 
-<div class="chart-div mt-4">
-  <div class="row">
-      <div class="chart-heading col-6 mt-2">
-          Power Usage
-      </div>
-      <div class="col-2 mt-2"></div>
-      <div class="col-4 mt-2 pr-5">
-        <input type="date" class="custom-dates" [value]="date" [max]="date" (change)="onChangeDate($event)">
-      </div>
-  </div>
-  <ng-container *ngIf="!showSpinner">
-    <kendo-chart style="height: 300px; font-size:14px;">
-      <kendo-chart-legend position="top" ></kendo-chart-legend>
-      <kendo-chart-tooltip format="{0}" [visible]="true" [shared]="true">
-      </kendo-chart-tooltip>
-      <kendo-chart-category-axis>
-        <kendo-chart-category-axis-item [categories]="categories" [majorGridLines]="{visible: false}" [labels]="{ rotation: -90,font: '14px Montserrat' }"></kendo-chart-category-axis-item>
-      </kendo-chart-category-axis>
-      <kendo-chart-value-axis>
-        <kendo-chart-value-axis-item [name]="'maxKwAxis'" [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
-        <kendo-chart-value-axis-item [name]="'numChargersAxis'" [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }" ></kendo-chart-value-axis-item>
-      </kendo-chart-value-axis>
-        <kendo-chart-series>
-          <kendo-chart-series-item [line]="{ style: 'smooth' }" type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#ffe135"></kendo-chart-series-item>
-          <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#ADD8E6" [gap]="3"></kendo-chart-series-item>
-        </kendo-chart-series>
-  </kendo-chart>
-  </ng-container>
-  <ng-container *ngIf="showSpinner">
-    <div class="spinner-overlay">
-      <mat-progress-spinner color="accent" mode="indeterminate" diameter="90"></mat-progress-spinner>
+<!-- <div *ngIf="selectedSite == ''" class="container" style="margin-top:120px;">
+  <div class="text-div text-center">
+    <div>
+      <h5 *ngIf="selectedCompany == '' ">Please Select Company</h5>
+      <h5 *ngIf="selectedCompany != '' ">Please Select Site</h5>
     </div>
-  </ng-container>
-</div>
+  </div>
+</div> -->

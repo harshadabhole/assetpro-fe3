@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   label1:any;
   label2:any;
   selectedSite:any;
-  categories:any;
+  categories:any=[];
   clickedDate: any;
   data1:any=[];
   data2:any=[];
@@ -34,12 +34,16 @@ export class DashboardComponent implements OnInit {
   title: string='By Charger';
   faultCodes: any=[];
   showFaultCode: boolean=false;
+  selectedCompany:any;
 
   constructor(
     private datePipe: DatePipe,
     private _siteService:SiteService
     ) { 
       this.loading=true;
+      this._siteService.updatedCompanyId.subscribe((res: any) => {
+        this.selectedCompany = this._siteService.getselectedCompany();
+      })
       this._siteService.updatedSiteId.subscribe((res: any) => {
         this.selectedSite = this._siteService.getselectedSite();
         if(this.selectedSite != '')
@@ -50,8 +54,8 @@ export class DashboardComponent implements OnInit {
           this.getFaultCodeByCharger();
           this.getPowerUsage();
         }
-        this.loading=false;
       })
+      
     }
    
 
@@ -192,10 +196,22 @@ export class DashboardComponent implements OnInit {
       SiteID:this.selectedSite,
       date:formattedDate
     }
-    this._siteService.getPowerUsage(data).subscribe((res:any)=>{
-      this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
-      this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
-      this.categories=res[0].Data.map((obj:any)=>{obj.Hour});
+    this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
+      const timezoneOffset = new Date().getTimezoneOffset();
+
+      for (const element of res[0].Data) 
+      {
+        const utcDate = new Date(element.Hour);
+        const localTime = utcDate.getTime() - timezoneOffset * 60 * 1000;
+        const localDate = new Date(localTime);
+
+        const h = localDate.getHours();
+        const hours = h.toString().padStart(2, '0') + ':00';
+
+        this.categories.push(hours);
+        this.data1.push({ category: hours, value1: element.MaxkW });
+        this.data2.push({ category: hours, value2: element.Charger });
+      }
       setInterval( async()=> {this.showSpinner=false;},800)
     })
   }

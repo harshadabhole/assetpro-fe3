@@ -87,6 +87,7 @@ onChangeCompany(value:string)
   this.selectDeptOption='';
   const x=this.companyList.find((s:any) => s.Name === value);
   this.selectedCompany=x.ID;
+  this._siteService.changeCompany(x.ID);
   localStorage.setItem('companyID',x.ID)
   localStorage.setItem('companyName',x.Name)
   this.getAllSites(this.selectedCompany)
