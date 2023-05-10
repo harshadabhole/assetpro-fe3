@@ -84,4 +84,12 @@ getPowerUsage(data:any):Observable<any>{
   return this.http.post<any>(`${this.baseUrl}api/Asset/getPowerUsage`,data)
 }
 
+getAllMarkers(siteID:any):Observable<any>{
+  console.log('siteID', siteID)
+  // return this.http.get<any>(`${this.baseUrl}api/Asset/getMapDetails/${siteID}`)
+  return this.http.get<any>(`${this.baseUrl}api/Asset/getMapDetails/BD1D9592-F490-ED11-AA20-02E21D877817`)
+  
+
+}
+
 }
