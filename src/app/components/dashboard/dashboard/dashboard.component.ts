@@ -133,9 +133,9 @@ export class DashboardComponent implements OnInit {
       date:this.endDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{
-      this.data1=res[0].Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
-      this.data2=res[0].Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
-      this.categories=res[0].Data.map((obj:any)=>{obj.Hour});
+      this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
+      this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+      this.categories=res.Data.map((obj:any)=>{obj.Hour});
       setInterval( async()=> {this.showSpinner=false;},800)
     })
   }
@@ -150,11 +150,11 @@ export class DashboardComponent implements OnInit {
   {
     this.loading=true;
     this._siteService.getUnitCount(this.selectedSite).subscribe((res:any)=>{
-      this.onlineCount=res[0].Data[0].onlineCount;
-      this.offlineCount=res[0].Data[0].offlineCount;
+      this.onlineCount=res.Data[0].onlineCount;
+      this.offlineCount=res.Data[0].offlineCount;
       this.unitCounts= [
-        { category: 'Online', value: res[0].Data[0].onlineCount },
-        { category: 'Offline', value: res[0].Data[0].offlineCount },
+        { category: 'Online', value: res.Data[0].onlineCount },
+        { category: 'Offline', value: res.Data[0].offlineCount },
       ];
       this.labelContent = this.labelContent.bind(this);
 
@@ -165,7 +165,7 @@ export class DashboardComponent implements OnInit {
   getFaultCodeByCharger()
   {
     this._siteService.getFaultCodeByCharger('BD1D9592-F490-ED11-AA20-02E21D877817').subscribe((res:any)=>{
-      this.faultCodes=res[0].Data
+      this.faultCodes=res.Data
       this.loading=false;
       this.showFaultCode=false;
     })
@@ -174,7 +174,7 @@ export class DashboardComponent implements OnInit {
   getFaultCodeByFaultCode()
   {
     this._siteService.getFaultCodeByFaultCode('BD1D9592-F490-ED11-AA20-02E21D877817').subscribe((res:any)=>{
-      this.faultCodes=res[0].Data;
+      this.faultCodes=res.Data;
       this.loading=false;
       this.showFaultCode=false;
     })
@@ -199,7 +199,7 @@ export class DashboardComponent implements OnInit {
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
       const timezoneOffset = new Date().getTimezoneOffset();
 
-      for (const element of res[0].Data) 
+      for (const element of res.Data) 
       {
         const utcDate = new Date(element.Hour);
         const localTime = utcDate.getTime() - timezoneOffset * 60 * 1000;

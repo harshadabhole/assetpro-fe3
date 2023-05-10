@@ -63,7 +63,7 @@ ngOnInit() {
     this.showAssetSearchbar=true;
     this.showDeptSearchbar=true;
     this._siteService.getAllDept(this.selectedSite).subscribe((res:any)=>{
-      res[0].Data.forEach(element => {
+      res.Data.forEach(element => {
         this.deptList.push(element)
       });
       this.loading=false;
@@ -268,7 +268,7 @@ ngOnInit() {
       }
       this._siteService.getMaintenanceStatusReport(object).subscribe((res:any)=>{
         localStorage.setItem('assetName',JSON.stringify(this.assetNameList));
-        localStorage.setItem('maintenanceStatusReport',JSON.stringify(res[0].Data[0]));
+        localStorage.setItem('maintenanceStatusReport',JSON.stringify(res.Data[0]));
         window.open('/maintenance-report', '_blank');
         this.loading=false;
       })

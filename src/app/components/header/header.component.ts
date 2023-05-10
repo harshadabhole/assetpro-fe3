@@ -43,8 +43,8 @@ getAllSites(data:any) {
   this.listItems=[];
   this.deptList=[];
   this._siteService.getAllSites(data).subscribe((res:any)=>{
-    this.showSiteList=res[0].Data.length > 0 ? true:false;
-    res[0].Data.forEach((element:any) => {
+    this.showSiteList=res.Data.length > 0 ? true:false;
+    res.Data.forEach((element:any) => {
       const object={
         ID:element.ID,
         Name:element.Name
@@ -60,8 +60,8 @@ getAllCompany()
   this.companyList=[];
   this.companyItems=[];
   this._siteService.getAllCompany().subscribe((res:any)=>{
-    this.showCompanyList=res[0].Data.length > 0 ? true:false;
-    res[0].Data.forEach(element => {
+    this.showCompanyList=res.Data.length > 0 ? true:false;
+    res.Data.forEach(element => {
       const object={
         ID:element.ID,
         Name:element.Name
