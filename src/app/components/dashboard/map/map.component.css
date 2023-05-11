@@ -72,3 +72,17 @@
       background: transparent url('../../../../assets/images/mapbox-icon.png') 0% 0% no-repeat padding-box !important;
       opacity: 1 !important;
     }
+
+    .leaflet-popup-content-wrapper {
+      width: 250px !important;
+  }
+  .leaflet-popup.leaflet-zoom-animated {
+    width: 250px !important;
+  }
+  .leaflet-popup-content {
+    width: 250px !important;
+  }
+
+  .icon-3 {
+    /* width:; */
+  }
