@@ -14,68 +14,83 @@
             <app-map></app-map>
         </div>
         <div class="col-5 unit-counts">
-          <div class="row">
-                <div class="col-6 unit-count-headings">Fault Codes
-                 <div class="mt-4" >
-                  <span style="font-size: 13px;margin-left:80px;">{{title}}</span>
-                  <span style="float:right;">
-                    <label class="switch">
-                      <input type="checkbox" checked (click)="onToggle($event)">
-                      <span class="slider round"></span>
-                    </label>
-                  </span>
-                  <ng-container *ngIf="!showFaultCode">
-                    <div class="mt-2 table-wrapper" *ngIf="faultCodes.length > 0">
-                      <table class="table table-bordered table-striped">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Count</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let element of faultCodes">
-                            <td>{{element?.Name}}</td>
-                            <td>{{element?.Count}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+          <ng-container *ngIf="!showFaultCode">
+            <div class="row">
+              <div class="col-6">
+                <div class="row list-details mt-4" >
+                  <div class="col-2 list-details-image p-0 m-0">
+                    <img class="images" src="../../../../assets/images/online.png">
+                  </div>
+                  <div class="col-7 list-details-text">
+                    <div class="mt-2 text-container" style="font-size: 12px;font-weight:bold;">
+                      Online Units
                     </div>
-                  </ng-container>
-                  <ng-container *ngIf="showFaultCode">
-                    <div class="custom-spinner">
-                      <mat-progress-spinner color="accent" mode="indeterminate" diameter="55"></mat-progress-spinner>
-                    </div>
-                  </ng-container>
-                 </div>
-                </div>
-                <div class="vertical-line"></div>
-                <div class="col-6 unit-count-headings">Communications
-                  <div class="row list-details" style="margin-top:100px;">
-                    <div class="col-2 list-details-image p-0 m-0">
-                      <img class="images" src="../../../../assets/images/online.png">
-                    </div>
-                    <div class="col-7 list-details-text">
-                      <div class="mt-2 text-container" style="font-size: 12px;">
-                        Online Units
-                      </div>
-                    </div>
-                    <div class="col-3 mt-2" style="color:green;">{{onlineCount}}</div>
-                 </div>
-                 <div class="row list-details mt-5">
+                  </div>
+                  <div class="col-3 mt-2" style="color:green;font-size: 12px;font-weight:bold;">{{onlineCount}}</div>
+               </div>
+              </div>
+              <div class="col-6">
+                <div class="row list-details mt-4" >
                   <div class="col-2 list-details-image p-0 m-0">
                     <img class="images" src="../../../../assets/images/offline.png">
                   </div>
                   <div class="col-7 list-details-text">
-                    <div class="mt-2 text-container" style="font-size: 12px;">
+                    <div class="mt-2 text-container" style="font-size: 12px;font-weight:bold;">
                       Offline Units
                     </div>
                   </div>
-                  <div class="col-3 mt-2" style="color:red;">{{offlineCount}}</div>
+                  <div class="col-3 mt-2" style="color:red;font-size: 12px; font-weight:bold;">{{offlineCount}}</div>
                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 mt-4" style="text-align: center;">
+                <span style="font-size: 15px; font-weight:bold;">Fault Code By Charger</span>
+                <div class="mt-2 table-wrapper">
+                  <table class="table table-bordered table-striped" style="text-align:center;">
+                    <thead>
+                      <tr>
+                        <th style="width:50%; font-weight:bold;">Name</th>
+                        <th style="width:50%;font-weight:bold;">Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let element of faultCodesByCharger">
+                        <td>{{element?.Name}}</td>
+                        <td>{{element?.Count}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div class="horizontal-line"></div>
-             </div>
+              </div>
+              <div class="vertical-line"></div>
+              <div class="col-6 mt-4" style="text-align: center;">
+                <span style="font-size: 15px; font-weight:bold;">Fault Code By Fault Code</span>
+                <div class="mt-2 table-wrapper" >
+                  <table class="table table-bordered table-striped" style="text-align:center;">
+                    <thead>
+                      <tr>
+                        <th style="width:50%; font-weight:bold;">Name</th>
+                        <th style="width:50%; font-weight:bold;">Count</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let element of faultCodes">
+                        <td>{{element?.Name}}</td>
+                        <td>{{element?.Count}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="horizontal-line"></div>
+          </ng-container>
+          <ng-container *ngIf="showFaultCode">
+            <div class="custom-spinner">
+              <mat-progress-spinner color="accent" mode="indeterminate" diameter="55"></mat-progress-spinner>
+            </div>
+          </ng-container>
         </div>
     </div>
   </div>

@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   faultCodes: any=[];
   showFaultCode: boolean=false;
   selectedCompany:any;
+  faultCodesByCharger: any;
 
   constructor(
     private datePipe: DatePipe,
@@ -52,7 +53,12 @@ export class DashboardComponent implements OnInit {
           this.showFaultCode=true;
           this.getUnitCount();
           this.getFaultCodeByCharger();
+          this.getFaultCodeByFaultCode();
           this.getPowerUsage();
+        }
+        else
+        {
+          this.showFaultCode=false;
         }
       })
       
@@ -165,9 +171,8 @@ export class DashboardComponent implements OnInit {
   getFaultCodeByCharger()
   {
     this._siteService.getFaultCodeByCharger('BD1D9592-F490-ED11-AA20-02E21D877817').subscribe((res:any)=>{
-      this.faultCodes=res.Data
+      this.faultCodesByCharger=res.Data
       this.loading=false;
-      this.showFaultCode=false;
     })
   }
 
