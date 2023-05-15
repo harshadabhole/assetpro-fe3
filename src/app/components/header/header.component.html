@@ -1,10 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-style">
     <img class="ml-4 mt-1" src="../../../assets/images/logo-logo-corner.png" height="50" width="100">
-        <div class="container mt-1">
-          <div class="row" style="margin-left:100px;">
+        <div class="container mt-1 " style="margin-right: 0px;">
+          <div class="row drop-box">
               <div class="col-6">
                   <div class="customSearch">
-                      <input type="text" placeholder="Select Company"
+                    <label for="input" class="ml-2 drop-title">Select Company</label>
+                      <input type="text" placeholder="Select Company" class="form-control form-control-md mb-1"
                           (focusin)="showCompany = true" 
                           (blur)="showCompany = false" 
                           (input)="onSearch($event.target.value)"
@@ -14,14 +15,15 @@
                               <li *ngFor="let option of companyItems" (mousedown)="onChangeCompany(option.Name)">{{ option.Name }}</li>
                           </span>
                           <span *ngIf="!showCompanyList">
-                              <li>No Company Found</li>
+                              <li class="mr-2">No Company Found</li>
                           </span>
                       </ul>
                     </div>
               </div>
-              <div class="col-6">
+              <div class="col-6" id="company">
                   <div class="customSearch">
-                      <input type="text" placeholder="Select Site"
+                    <label for="input" class="ml-2 drop-title">Select Site</label>
+                      <input type="text" class="sm" placeholder="Select Site"class="form-control form-control-md"
                           (focusin)="showSites = true" 
                           (focusout)="showSites = false" 
                           (keyup)="onSearchSite($event.target.value)"

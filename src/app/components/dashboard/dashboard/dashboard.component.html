@@ -1,4 +1,4 @@
-<div *ngIf="selectedSite == ''" class="overlay" >
+<!-- <div *ngIf="selectedSite == ''" class="overlay" >
     <div class="text-div text-center" style="margin-top: 30vh;; margin-left:63vh;">
       <div>
         <h5 *ngIf="selectedCompany == '' ">Please Select Company</h5>
@@ -6,16 +6,17 @@
       </div>
     </div>
 </div>
+  </div> -->
 <div class="content">
   <app-spinner *ngIf="loading && selectedSite != '' "></app-spinner>
-  <div   class="map-unit-div mt-4">
+  <div class="map-unit-div mt-4">
     <div class="row" style="padding-right: 15px;">
-        <div class="col-7">
-            <app-map></app-map>
+        <div class="col-12 col-md-7">
+          <div><app-map></app-map></div>
         </div>
         <div class="col-5">
           <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
              <div class="row " style="background: #FFFFFF; border: 1px solid #01AE4F; border-radius: 5px; opacity: 1; height: 45px;">
               <div class="col-8" style="display: flex; align-items: center;">
                 <div class="online-circle" style="display: inline-block; "></div>
@@ -25,7 +26,7 @@
                <div style="margin-top:10px;margin-right:20px;color:#01AE4F;font-size:15px;">{{onlineCount}}</div>
              </div>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <div class="row ml-1" style="background: #FFFFFF; border: 1px solid #8494A2; border-radius: 5px; opacity: 1; height: 45px;">
                 <div class="col-8" style="display: flex; align-items: center;">
                   <div class="offline-circle" style="display: inline-block; "></div>
@@ -129,5 +130,5 @@
         <mat-progress-spinner color="accent" mode="indeterminate" diameter="90"></mat-progress-spinner>
       </div>
     </ng-container>
-  </div>
+  </div>  
 </div>
