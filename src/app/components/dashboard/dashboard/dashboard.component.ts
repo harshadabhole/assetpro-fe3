@@ -131,21 +131,52 @@ export class DashboardComponent implements OnInit {
   onChangeDate(event: any): void 
   {
     this.showSpinner=true;
+    let d=new Date();
     let today=new Date(event.target.value);
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
+    const year1 = d.getFullYear();
+    const month1 = String(d.getMonth() + 1).padStart(2, '0');
+    const day1 = String(d.getDate()).padStart(2, '0');
     this.endDate=`${year}-${month}-${day}`;
+    const d1=`${year1}-${month1}-${day1}`
     const data={
       SiteID:this.selectedSite,
       date:this.endDate
     }
-    this._siteService.getPowerUsage(data).subscribe((res:any)=>{
-      this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
-      this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
-      this.categories=res.Data.map((obj:any)=>{obj.Hour});
+      if(d1 != this.endDate)
+      {
+        this._siteService.getPowerUsage(data).subscribe((res:any)=>{
+        this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
+        this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+        this.categories=res.Data.map((obj:any)=>{obj.Hour});
+        })
+      }
+      else
+      {
+        this.categories=[];
+        this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
+          const timezoneOffset = new Date().getTimezoneOffset();
+          this.categories=[];
+          this.data1=[];
+          this.data2=[];
+         res.Data.forEach((element:any)=>
+         {
+          const utcDate = new Date(element.Hour);
+          const localTime = utcDate.getTime() - timezoneOffset * 60 * 1000;
+          const localDate = new Date(localTime);
+  
+          const h = localDate.getHours();
+          const hours = h.toString().padStart(2, '0') + ':00';
+          this.categories.push(hours);
+          this.data1.push({ category: hours, value1: element.MaxkW });
+          this.data2.push({ category: hours, value2: element.Charger });
+        })
+          
+        })
+      }
       setInterval( async()=> {this.showSpinner=false;},800)
-    })
   }
 
   onSearch(event:any)

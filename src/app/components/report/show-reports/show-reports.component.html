@@ -12,7 +12,7 @@
   <div class="mt-1" style="margin-left:10px;font-weight:bold;">Total Assets:&nbsp; <span style="font-weight:normal;">{{total}}</span></div>
   <hr>
  
-  <kendo-chart title="Maintenance Status" style="font-size:20px;">
+  <kendo-chart title="Maintenance Status" style="font-size:20px;height: 300px;">
     <kendo-chart-legend position="bottom" ></kendo-chart-legend>
     <kendo-chart-series>
       <kendo-chart-series-item
@@ -27,4 +27,36 @@
     </kendo-chart-series>
   </kendo-chart>
   <hr>
+  <div >
+    <table class="table table-bordered table-striped" style="text-align:center;">
+      <thead>
+        <tr>
+          <th>Asset Name</th>
+          <th>Asset Type</th>
+          <th>Status</th>
+          <th>Last PM Performed at (HMR)</th>
+          <th>Current Hours (HMR)</th>
+          <th>Next PM would be at (HMR)</th>
+          <th>Hours until next (HMR)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of data.details">
+          <td>{{element?.AssetName}}</td>
+          <td>{{element?.AssetTypeName}}</td>
+          <td *ngIf="element?.Status == 'Completed'" style="color:green;">{{element?.Status}}</td>
+          <td *ngIf="element?.Status == 'Overdue'" style="color:red;">{{element?.Status}}</td>
+          <td *ngIf="element?.Status == 'Upcoming'" style="color:yellow;">{{element?.Status}}</td>
+          <td *ngIf="element?.Status == null">-</td>
+          <td>{{element?.LastPerformed != null ? element?.LastPerformed : '-'}}</td>
+          <td>{{element?.CurrentHMR != null ? element?.CurrentHMR : '-'}}</td>
+          <td>{{element?.Next_PM != null ? element?.Next_PM : '-'}}</td>
+          <td *ngIf="element?.Until_NextPM < 0" style="color: red;">{{element?.Until_NextPM}}</td>
+          <td *ngIf="element?.Until_NextPM > 0" style="color: black;">{{element?.Until_NextPM}}</td>
+          <td *ngIf="element?.Until_NextPM == 0" style="color: black;">{{element?.Until_NextPM}}</td>
+          <td *ngIf="element?.Until_NextPM == null" style="color: black;">-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

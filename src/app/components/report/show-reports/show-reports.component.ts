@@ -38,9 +38,9 @@ total:any;
       this.assetName=JSON.parse(localStorage.getItem('assetName'));
       this.total=this.assetName.length;
       this.pieData = [
-        { category: "Completed", value: this.data.Completed, colorField:'rgb(80,227,194)' },
-        { category: "Overdue", value: this.data.Overdue,colorField:'rgb(234,66,86)' },
-        { category: "Upcoming", value: this.data.Upcoming, colorField:'rgb(245,187,35)' },
+        { category: "Completed", value: this.data.count[0].Completed, colorField:'rgb(80,227,194)' },
+        { category: "Overdue", value: this.data.count[0].Overdue,colorField:'rgb(234,66,86)' },
+        { category: "Upcoming", value: this.data.count[0].Upcoming, colorField:'rgb(245,187,35)' },
       ];
       this.labelContent = this.labelContent.bind(this);
       this.loading=false;

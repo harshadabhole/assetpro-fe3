@@ -24,10 +24,15 @@
     line-height: 15px;
 }
 
-.toggle{
-    position: relative;
-    width:60px;
-    background: #1D3D57 0% 0% no-repeat padding-box;
+.selected {
+    background-color: #AAAAAA;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    text-align:center;
-}
+    box-sizing: border-box;
+    padding: 8px; 
+  }
+  .selected .icon-size {
+    width: calc(100% - 0px); 
+  }
+  

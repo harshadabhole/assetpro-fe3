@@ -41,7 +41,6 @@ public cover =
     private datePipe: DatePipe
    ) 
    {
-    this.loading=true;
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();
       this.getAllDeptBySiteID();
@@ -83,8 +82,8 @@ ngOnInit() {
     
     this._siteService.getAllAsset(object).subscribe((response:any)=>{
       console.log('Assets---',response)
-      this.assetList=response[0].Data
-      this.filterAsset=response[0].Data
+      this.assetList=response.Data
+      this.filterAsset=response.Data
        this.loading=false;
     },(err:any)=>{
       this.loading=false;
@@ -268,7 +267,7 @@ ngOnInit() {
       }
       this._siteService.getMaintenanceStatusReport(object).subscribe((res:any)=>{
         localStorage.setItem('assetName',JSON.stringify(this.assetNameList));
-        localStorage.setItem('maintenanceStatusReport',JSON.stringify(res.Data[0]));
+        localStorage.setItem('maintenanceStatusReport',JSON.stringify(res.Data));
         window.open('/maintenance-report', '_blank');
         this.loading=false;
       })
