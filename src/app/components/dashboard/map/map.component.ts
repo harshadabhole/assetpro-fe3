@@ -213,21 +213,25 @@ export class MapComponent implements OnInit {
   constructor(private _siteService:SiteService) {
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();
+      
      
       
 
-  //     if(this.selectedSite !== '') {
-  //       this.markers.forEach((marker) => {
-  //         console.log('qwertyuiop', marker)
-  //         this.map.removeLayer(marker)
-  //       this.markers = [];
-  //       this.getAllMarkers();
-  //     })
+      if(this.selectedSite !== '') {
+        console.log('inside constructor if')
+        this.clearMarkers();
+        this.markers = [];
+        this.getAllMarkers();
+      //   this.markers.forEach((marker) => {
+      //     console.log('qwertyuiop', marker)
+      //     this.map.removeLayer(marker)
+       
+      // })
      
-  //   }
+    }
   // else{
-    this.markers = [];
-    this.getAllMarkers();
+    // this.markers = [];
+    // this.getAllMarkers();
   // }
 }
   )   
@@ -247,9 +251,9 @@ export class MapComponent implements OnInit {
     })
     }
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(this.map);
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   attribution: '&copy; OpenStreetMap contributors'
+    // }).addTo(this.map);
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -267,6 +271,20 @@ export class MapComponent implements OnInit {
 
   }
   
+
+  clearMarkers() {
+    console.log('clearMarkers',this.markers);
+    this.markerClusterGroup.clearLayers();
+    // this.markers.forEach(marker => {
+    //   console.log('markeerrrrrererer', marker)
+    //   // this.map.removeLayer(marker); 
+    //   console.log('this.markerCluster b', this.markerClusterGroup)
+    //   this.markerClusterGroup.clearMarkers()
+    //   console.log('this.markerCluster a', this.markerClusterGroup)
+    // });
+    this.markers = [];
+  }
+
   getAllMarkers() {
     console.log('getAllMarkers',this.selectedSite);
     this.markers = [];
@@ -414,14 +432,14 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
               element.addEventListener('mouseout', function(event) {
                 console.log('evenet')
                 const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                closeButton.click();
+                // closeButton.click();
               });
             }
             const element1 = document.querySelector('.bg-marker.icon-2');
             if(element1) {
               element1.addEventListener('mouseout', function(event) {
                 const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                 closeButton.click();
+                //  closeButton.click();
                });
             }
             
@@ -437,9 +455,9 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
       this.markers[this.markers.length - 1].openPopup();
       
     function createPopupContent(charger: any, iconType: string): string {
-      console.log('charger',charger)
+      console.log('chargercharger',charger)
         const imageSrc = "../../../../assets/images/car.jpg";
-        let status, voltage, power, soc;
+        let status, voltage, power, soc ,paired;
       
         if (iconType === "icon-1") {
           console.log('inside if icon 1')
@@ -447,18 +465,20 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
           voltage = charger.Voltage1;
           power = charger.Power1;
           soc = charger.SoC1;
+          paired  = charger.Paired1;
         } else if (iconType === "icon-2") {
           console.log('inside else if icon 2')
           status = charger.Status2;
           voltage = charger.Voltage2;
           power = charger.Power2;
           soc = charger.SoC2;
+          paired  = charger.Paired2;
         }
       
         if(iconType === "icon-3") {
           return `
           <div style="display: flex; align-items: center;">
-            <img src="${imageSrc}" style="width: 50px; margin-right: 10px;">
+            <img src="${"../../../../assets/images/Charger.png"}" style="width: 50px; margin-right: 10px;">
             <div>
               <h5>${charger.Name}</h5>
             </div>
@@ -466,13 +486,17 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
         }else if(iconType === "icon-1" || iconType === "icon-2"){
           return `
           <div style="display: flex; align-items: center;">
-            <img src="${imageSrc}" style="width: 50px; margin-right: 10px;">
+          <div>
+          <h6 style="top:0%">${iconType === "icon-1" ? 'Port A' : 'Port B'}</h6>
+          <img src="${iconType === "icon-1" ? portIcon1 : portIcon2}" style="width: 50px; margin-right: 10px;">
+          </div>
             <div>
               <h5>${charger.Name}</h5>
-              <p class="mb-1 mt-1">Status: <span>${status}</span></p>
-              <p class="mb-1 mt-1">Voltage: <span>${voltage}</span></p>
-              <p class="mb-1 mt-1">Power: <span>${power}</span></p>
-              <p class="mb-1 mt-1">Soc: <span>${soc}</span></p>
+              <p class="mb-1 mt-1"><b>Status:</b> <span class="badge" [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging'}">${status}</span></p>
+              <p class="mb-1 mt-1"><b>Voltage:</b> <span>${voltage}</span></p>
+              <p class="mb-1 mt-1"><b>Power:</b> <span>${power}</span></p>
+              <p class="mb-1 mt-1"><b>Soc:</b> <span>${soc}</span></p>
+              <p class="mb-1 mt-1"><b>Paired:</b> <span>${paired}</span></p>
             </div>
           </div>`;
         }
@@ -483,10 +507,16 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
 
   
 
- 
     this.markerClusterGroup.addLayers(this.markers);
     this.map.addLayer(this.markerClusterGroup);
-    this.map.flyTo([51.49, -0.1],15)
+    
+    if(this.markers[0] != undefined){
+      // this.map.flyTo([markersAPIRes[0].Lat, markersAPIRes[0].Lon], 12)
+      this.map.flyTo([this.markers[0]._latlng.lat, this.markers[0]._latlng.lng],15)
+    }else{
+      this.map.flyTo([0, 0], 1)
+    }
+
     
     if(this.map){
       this.map.eachLayer((layer)=>{
@@ -495,11 +525,28 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
     }
     
   }
-   flyTo() {
-    console.log('click flyTo');
-    this.map.flyTo([51.49, -0.1],13)
 
-  }
+  getStatusStyle(status: string): object {
+    let style: object = {};
   
+    if (status === 'Available') {
+      style = {
+        'background-color': 'green',
+        // Add more style properties if needed
+      };
+    } else if (status === 'Faulted') {
+      style = {
+        'background-color': 'red',
+        // Add more style properties if needed
+      };
+    } else if (status === 'Charging') {
+      style = {
+        'background-color': 'yellow',
+        // Add more style properties if needed
+      };
+    }
+  
+    return style;
+  }
 
 }

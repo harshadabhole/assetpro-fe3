@@ -86,3 +86,24 @@
   .icon-3 {
     /* width:; */
   }
+  .badge {
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: #FFFFFF !important;
+  }
+  
+  ::ng-deep span.badge .green {
+    background-color: #4CAF50 !important;
+  }
+  
+  ::ng-deep span.badge .red {
+    background-color: #FF0000 !important;
+  }
+  ::ng-deep span.badge .yellow {
+    background-color: #ffd000 !important;
+  }
+
+  /* ::ng-deep span.badge {
+    color: #000000 !important;
+  } */

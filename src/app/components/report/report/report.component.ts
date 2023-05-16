@@ -83,8 +83,8 @@ ngOnInit() {
     
     this._siteService.getAllAsset(object).subscribe((response:any)=>{
       console.log('Assets---',response)
-      this.assetList=response[0].Data
-      this.filterAsset=response[0].Data
+      this.assetList=response.Data
+      this.filterAsset=response.Data
        this.loading=false;
     },(err:any)=>{
       this.loading=false;
