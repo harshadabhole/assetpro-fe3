@@ -5,7 +5,7 @@
         <h5 *ngIf="selectedCompany != '' ">Please Select Site</h5>
       </div>
     </div>
-  </div>
+</div>
 <div class="content">
   <app-spinner *ngIf="loading && selectedSite != '' "></app-spinner>
   <div   class="map-unit-div mt-4">
@@ -13,86 +13,85 @@
         <div class="col-7">
             <app-map></app-map>
         </div>
-        <div class="col-5 unit-counts">
-          <ng-container *ngIf="!showFaultCode">
+        <div class="col-5">
+          <div class="row">
+            <div class="col-6">
+             <div class="row " style="background: #FFFFFF; border: 1px solid #01AE4F; border-radius: 5px; opacity: 1; height: 45px;">
+              <div class="col-8" style="display: flex; align-items: center;">
+                <div class="online-circle" style="display: inline-block; "></div>
+                <div style="margin-left:5vh; color:#01AE4F; font-size:15px;">Online Units</div>
+              </div>
+               <div class="vertical-line"></div>
+               <div style="margin-top:10px;margin-right:20px;color:#01AE4F;font-size:15px;">{{onlineCount}}</div>
+             </div>
+            </div>
+            <div class="col-6">
+              <div class="row ml-1" style="background: #FFFFFF; border: 1px solid #8494A2; border-radius: 5px; opacity: 1; height: 45px;">
+                <div class="col-8" style="display: flex; align-items: center;">
+                  <div class="offline-circle" style="display: inline-block; "></div>
+                  <div style="margin-left:5vh; color:#8494A2;font-size:15px;">Offline Units</div>
+                </div>
+               <div class="vertical-line1"></div>
+               <div style="margin-top:10px;margin-right:20px;color:#8494A2;font-size:15px;">{{offlineCount}}</div>
+              </div>
+            </div>
+          </div>
+          
             <div class="row">
-              <div class="col-6">
-                <div class="row list-details mt-4" >
-                  <div class="col-2 list-details-image p-0 m-0">
-                    <img class="images" src="../../../../assets/images/online.png">
-                  </div>
-                  <div class="col-7 list-details-text">
-                    <div class="mt-2 text-container" style="font-size: 12px;font-weight:bold;">
-                      Online Units
+              <div class="col-12 unit-counts mt-4">
+                <ng-container *ngIf="!showFaultCode">
+                  <div class="row">
+                    <div class="col-6 mt-2">
+                      <span style="font-size: 15px; font-weight:bold;">Fault Code By Charger</span>
+                      <div class="mt-2 table-wrapper" *ngIf="showCharger">
+                        <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr style="background-color: #1D3D57BF;">
+                              <th style="color:white;">Name</th>
+                              <th style="color:white;">Count</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let element of faultCodesByCharger">
+                              <td>{{element?.Name}}</td>
+                              <td>{{element?.Count}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div *ngIf="!showCharger" style="margin-top: 15vh;">No Data Available</div>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="col-6 mt-2">
+                      <span style="font-size: 15px; font-weight:bold;">Fault Code By Fault Code</span>
+                      <div class="mt-2 table-wrapper" *ngIf="showFault">
+                        <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr style="background-color: #1D3D57BF;">
+                              <th style="color:white;">Name</th>
+                              <th style="color:white;">Count</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let element of faultCodes">
+                              <td>{{element?.Name}}</td>
+                              <td>{{element?.Count}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div *ngIf="!showFault" style="margin-top: 15vh;">No Data Available</div>
                     </div>
                   </div>
-                  <div class="col-3 mt-2" style="color:green;font-size: 12px;font-weight:bold;">{{onlineCount}}</div>
-               </div>
-              </div>
-              <div class="col-6">
-                <div class="row list-details mt-4" >
-                  <div class="col-2 list-details-image p-0 m-0">
-                    <img class="images" src="../../../../assets/images/offline.png">
+                </ng-container>
+
+                <ng-container *ngIf="showFaultCode">
+                  <div class="custom-spinner">
+                    <mat-progress-spinner color="accent" mode="indeterminate" diameter="55"></mat-progress-spinner>
                   </div>
-                  <div class="col-7 list-details-text">
-                    <div class="mt-2 text-container" style="font-size: 12px;font-weight:bold;">
-                      Offline Units
-                    </div>
-                  </div>
-                  <div class="col-3 mt-2" style="color:red;font-size: 12px; font-weight:bold;">{{offlineCount}}</div>
-               </div>
+                </ng-container>
               </div>
             </div>
-            <div class="row">
-              <div class="col-6 mt-4" style="text-align: center;">
-                <span style="font-size: 15px; font-weight:bold;">Fault Code By Charger</span>
-                <div class="mt-2 table-wrapper" *ngIf="showCharger">
-                  <table class="table table-bordered table-striped" style="text-align:center;">
-                    <thead>
-                      <tr>
-                        <th style="width:50%; font-weight:bold;">Name</th>
-                        <th style="width:50%;font-weight:bold;">Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let element of faultCodesByCharger">
-                        <td>{{element?.Name}}</td>
-                        <td>{{element?.Count}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div *ngIf="!showCharger" style="margin-top: 15vh;">No Data Available</div>
-              </div>
-              <div class="vertical-line"></div>
-              <div class="col-6 mt-4" style="text-align: center;">
-                <span style="font-size: 15px; font-weight:bold;">Fault Code By Fault Code</span>
-                <div class="mt-2 table-wrapper" *ngIf="showFault">
-                  <table class="table table-bordered table-striped" style="text-align:center;">
-                    <thead>
-                      <tr>
-                        <th style="width:60%; font-weight:bold;">Name</th>
-                        <th style="width:40%; font-weight:bold;">Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let element of faultCodes">
-                        <td>{{element?.Name}}</td>
-                        <td>{{element?.Count}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div *ngIf="!showFault" style="margin-top: 15vh;">No Data Available</div>
-              </div>
-            </div>
-            <div class="horizontal-line"></div>
-          </ng-container>
-          <ng-container *ngIf="showFaultCode">
-            <div class="custom-spinner">
-              <mat-progress-spinner color="accent" mode="indeterminate" diameter="55"></mat-progress-spinner>
-            </div>
-          </ng-container>
         </div>
     </div>
   </div>
@@ -120,7 +119,7 @@
           <kendo-chart-value-axis-item [name]="'numChargersAxis'" [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }" ></kendo-chart-value-axis-item>
         </kendo-chart-value-axis>
           <kendo-chart-series>
-            <kendo-chart-series-item [line]="{ style: 'smooth' }" type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#ffe135"></kendo-chart-series-item>
+            <kendo-chart-series-item [line]="{ style: 'smooth' }" type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#1D3D57"></kendo-chart-series-item>
             <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#ADD8E6" [gap]="3"></kendo-chart-series-item>
           </kendo-chart-series>
     </kendo-chart>

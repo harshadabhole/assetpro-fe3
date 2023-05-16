@@ -1,24 +1,34 @@
-<!-- <div class="toggle">
-  <img class="mt-4" src="../../../assets/images/Group 66342.png">
-</div> -->
 <div class="side-bar-container d-none d-md-block pt-4">
-  <img class="ml-2" src="../../../assets/images/Group 66342.png">
-  <div class="text-center mt-4">
-    <a  class="linkHov ng-star-inserted" routerlinkactive="" [routerLink]="['/dashboard']">
-      <div class="text-center sidebar-menu-item">
+  <div [ngClass]="{'text-center': true, 'selected': isSelected('/dashboard')}" style="margin-top: 8vh;">
+    <a class="linkHov ng-star-inserted" routerLinkActive="" [routerLink]="['/dashboard']" *ngIf="selectedSite !== '' else disabledLink">
+      <div class="text-center sidebar-menu-item" >
         <div class="ng-star-inserted">
           <img class="icon-size" src="../../../assets/images/Path 18537.png">
         </div>
       </div>
     </a>
+    <ng-template #disabledLink>
+      <div class="text-center sidebar-menu-item" >
+        <div class="ng-star-inserted">
+          <img class="icon-size" src="../../../assets/images/Path 18537.png" style="opacity: 0.5; cursor: not-allowed;">
+        </div>
+      </div>
+    </ng-template>
   </div>
-  <div class="text-center mt-4" >
-    <a  class="linkHov ng-star-inserted" routerlinkactive="" [routerLink]="['/report']">
+  <div [ngClass]="{'text-center': true, 'selected': isSelected('/report')}" style="margin-top: 6vh;">
+    <a class="linkHov ng-star-inserted" routerLinkActive="" [routerLink]="['/report']" *ngIf="selectedSite !== '' else disabledLink2">
       <div class="text-center sidebar-menu-item">
         <div class="ng-star-inserted">
           <img class="icon-size" src="../../../assets/images/noun-report-1313194.png">
         </div>
       </div>
     </a>
+    <ng-template #disabledLink2>
+      <div class="text-center sidebar-menu-item">
+        <div class="ng-star-inserted">
+          <img class="icon-size" src="../../../assets/images/noun-report-1313194.png" style="opacity: 0.5; cursor: not-allowed;">
+        </div>
+      </div>
+    </ng-template>
   </div>
-</div>    
+</div>
