@@ -432,14 +432,14 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
               element.addEventListener('mouseout', function(event) {
                 console.log('evenet')
                 const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                // closeButton.click();
+                closeButton.click();
               });
             }
             const element1 = document.querySelector('.bg-marker.icon-2');
             if(element1) {
               element1.addEventListener('mouseout', function(event) {
                 const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                //  closeButton.click();
+                 closeButton.click();
                });
             }
             
