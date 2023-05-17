@@ -10,6 +10,7 @@ import { LegendLabelsContentArgs } from "@progress/kendo-angular-charts";
   providers:[DatePipe]
 })
 export class DashboardComponent implements OnInit {
+
   last7DaysDates:any=[];
   dates:any;
   date:any;
@@ -38,10 +39,11 @@ export class DashboardComponent implements OnInit {
   faultCodesByCharger: any;
   showCharger: boolean=false;
   showFault: boolean=false;
+  seriesStyle = { fill: 'linear-gradient(to bottom, #1D3D57, #FFFFFF)', className: 'my-class' };
 
   constructor(
     private datePipe: DatePipe,
-    private _siteService:SiteService
+    private _siteService:SiteService,
     ) { 
       this.loading=true;
       this._siteService.updatedCompanyId.subscribe((res: any) => {
@@ -72,7 +74,9 @@ export class DashboardComponent implements OnInit {
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.getLastSevenDays(); 
   }
-
+  
+  
+  
   getLastSevenDays()
   {
     this.last7DaysDates=[];
@@ -99,8 +103,8 @@ export class DashboardComponent implements OnInit {
     });
   
   }
-
-
+  
+  
   isToday(dateString: string): boolean {
     const today = this.isClicked==false ? new Date():new Date(this.clickedDate);
      const date = new Date(dateString);
@@ -148,6 +152,7 @@ export class DashboardComponent implements OnInit {
       if(d1 != this.endDate)
       {
         this._siteService.getPowerUsage(data).subscribe((res:any)=>{
+          console.log("Power Usage on date change----",res.Data)
         this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
         this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
         this.categories=res.Data.map((obj:any)=>{obj.Hour});
@@ -178,6 +183,8 @@ export class DashboardComponent implements OnInit {
       }
       setInterval( async()=> {this.showSpinner=false;},800)
   }
+
+  
 
   onSearch(event:any)
   {
@@ -237,6 +244,7 @@ export class DashboardComponent implements OnInit {
       date:formattedDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
+      console.log("Power Usage ---",res.Data)
       const timezoneOffset = new Date().getTimezoneOffset();
 
       for (const element of res.Data) 
