@@ -487,16 +487,16 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
           return `
           <div style="display: flex; align-items: center;">
           <div>
-          <h6 style="top:0%">${iconType === "icon-1" ? 'Port A' : 'Port B'}</h6>
+          <h6 style="top:0%;font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;">${iconType === "icon-1" ? 'Port A' : 'Port B'}</h6>
           <img src="${iconType === "icon-1" ? portIcon1 : portIcon2}" style="width: 50px; margin-right: 10px;">
           </div>
             <div>
-              <h5>${charger.Name}</h5>
-              <p class="mb-1 mt-1"><b>Status:</b> <span class="badge" [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging'}">${status}</span></p>
-              <p class="mb-1 mt-1"><b>Voltage:</b> <span>${voltage}</span></p>
-              <p class="mb-1 mt-1"><b>Power:</b> <span>${power}</span></p>
-              <p class="mb-1 mt-1"><b>Soc:</b> <span>${soc}</span></p>
-              <p class="mb-1 mt-1"><b>Paired:</b> <span>${paired}</span></p>
+              <h5 style="font: normal normal bold 18px Montserrat;letter-spacing: 0px;opacity: 1;">${charger.Name}</h5>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging'}">${status}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Power</b>:&nbsp;<span>${power}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Soc</b>:&nbsp;<span>${soc}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Paired</b>:&nbsp;<span>${paired}</span></p>
             </div>
           </div>`;
         }
