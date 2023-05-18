@@ -1,76 +1,143 @@
-.navbar-style {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 70px;
-    background-color: white;
-    z-index: 1000;
-    border-bottom: 1px solid #00000029;
+
+nav.primary-navigation {
+  margin: 0 auto;
+  display: flex;
+  /* padding: 2vh 0 0 0; */
+  text-align: center;
+  background-color: #fff9f9;
+  border-bottom: 1px solid rgb(187, 186, 186);
+  box-shadow: 0px 0px 20px #3ca0e7 !important;
 }
 
-.customSearch {
-    position: relative;
-    display: inline-block;
-  }
-  
-input {
-    border:1px solid #EAEAEA;
-    box-shadow: 0px 0px 6px #00000029;
-    border-radius: 5px;
-    opacity: 1;
-    padding-left:5px;
-    height:32px;
-    width:100%;
-    padding-right:5px;
-    margin-left:10px;
-    cursor:pointer; 
-    text-align: center;
-    background-image: url('../../../assets/images/downward-arrow.png');
-    background-repeat: no-repeat;
-    background-size: 14px 14px;
-    background-position:  calc(100% - 14px) center;
-  }
+nav.primary-navigation ul li {
+  list-style: none;
+  margin: 0 auto;
+  /* border-left: 2px solid #3ca0e7; */
+  display: inline-block;
+  padding: 20px 0 ;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  /* font-family: arvo; */
+  z-index: 1000;
+  /* font: normal normal 18px Montserrat; */
+  /* letter-spacing: 0px; */
+  color: #555454cc;
+  opacity: 1;
+  height: 30px;
+  /* margin-top: 0; */
 
-  input:focus {
-    border:1px solid #EAEAEA;
-    outline: #EAEAEA;
-  }
-  
-ul {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    width: 210px;
-    padding: 0;
-    margin: 0;
-    margin-top:5px;
-    margin-left:10px;
-    list-style-type: none;
-    background-color: #fff;
-    border-radius: 5px;
-    z-index: 4;
-    max-height: 180px;
-    overflow: auto;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
-  }
+
+}
+
+nav.primary-navigation ul li {
+  color: rgb(63, 63, 63);
+  font: normal normal 18px Montserrat;
+  letter-spacing: 0px;
+  opacity: 1;
+  font-size: 20px;
+
+}
+
+
+nav.primary-navigation ul li:hover {
+  cursor: pointer;
+}
+
+nav.primary-navigation ul input {
+  /* margin-top:0px ; */
+  border: 1px solid rgb(118, 158, 219);
+  font-size: 18px;
+  font-weight: bold;
+  list-style: none;
+  margin: 0 auto;
+  /* border-left: 2px solid #3ca0e7; */
+  display: inline-block;
+  padding: 20px ;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  /* font-family: arvo; */
+  z-index: 1000;
+  /* font: normal normal 18px Montserrat; */
+  /* letter-spacing: 0px; */
+  color: #555454cc;
+  opacity: 1;
+  height: 30px;
+}
+
+nav.primary-navigation ul input:hover {
+  margin-top:0px ;
+  border: 3px solid rgb(118, 158, 219);
+}
+
+nav.primary-navigation ul li ul {
+  visibility: hidden;
+  /* padding: 10px; */
+  opacity: 0;
+  position: absolute;
+  padding-left: 0;
+  left: 0;
+  display: none;
+  background: rgb(255, 255, 255);
+  overflow:auto;
+  max-height: 400px;
+  min-height: fit-content;
+
+}
+
+nav.primary-navigation ul li:hover > ul,
+nav.primary-navigation ul li ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+  min-width: 250px;
+  text-align: left;
+  padding-top: 10px;
+  box-shadow: 0px 3px 5px -1px #8a8888;
+}
+
+nav.primary-navigation ul li ul li {
+  clear: both;
+  margin-top: 0;
+  width: 80%;
+  text-align: left;
+  margin-bottom: 5px;
+  border-style: none;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+nav.primary-navigation ul li ul li:hover {
+  padding-left: 30px;
+  border-left: 2px solid #3ca0e7;
+  transition: all 0.3s ease;
+  color: #3ca0e7 ;
+  font-weight: bold;
+
+}
+
+/* a {
+  text-decoration: none;
+} */
+
+/* a:hover {
+  color: #3ca0e7;
+} */
+
+ul li ul li {
+  transition: all 0.5s ease;
+}
 
 ul::-webkit-scrollbar {
-    width: 6px;
-  }
-  
+  width: 8px;
+}
+
 ul::-webkit-scrollbar-thumb {
-    background-color: #eee;
-    border-radius: 3px;
-  }
-  
-li {
-    padding-left: 15px;
-    cursor: pointer;
-  }
-  
-li:hover {
-    background-color: #eee;
-  }
-  
+  background-color: #d4d0d0;
+  border-radius: 3px;
+}
+
+
 
 

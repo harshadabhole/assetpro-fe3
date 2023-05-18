@@ -26,6 +26,9 @@ beforeUnloadHandler(event) {
   selectDeptOption:string=''
   showSiteList: boolean;
   showCompanyList: boolean;
+  Company:string="";
+  Site:string="";
+
   constructor(
     private _siteService: SiteService,
   ) 
@@ -37,6 +40,12 @@ beforeUnloadHandler(event) {
 
   ngOnInit() {
     this.getAllCompany();
+
+    document.getElementById('company')!=null ?document.getElementById('company').addEventListener('mouseover', function() {
+      document.getElementById('companylist').style.display = 'block'}):'';
+    
+      document.getElementById('site')!=null ? document.getElementById('site').addEventListener('mouseover', function() {
+      document.getElementById('sitelist').style.display = 'block'}):'';
   }
 
 getAllSites(data:any) {
@@ -78,10 +87,14 @@ onChangeSite(value:any)
   this._siteService.changeSite(x.ID);
   localStorage.setItem('siteID',x.ID);
   localStorage.setItem('siteName',x.Name)
+  this.Site= value
+  const button = document.getElementById('sitelist');
+  button.style.display = 'none'
 }
 
 onChangeCompany(value:string)
-{
+{ 
+  this.Company=value
   this._siteService.changeSite('');
   this.selectedOption=value;
   this.selectDeptOption='';
@@ -91,7 +104,12 @@ onChangeCompany(value:string)
   localStorage.setItem('companyID',x.ID)
   localStorage.setItem('companyName',x.Name)
   this.getAllSites(this.selectedCompany)
-
+  const button = document.getElementById('companylist');
+  button.style.display = 'none'
+  this.Site="";
+  document.getElementById('site')? document.getElementById('site').addEventListener('mouseover', function() {
+    document.getElementById('sitelist').style.display = 'block'}):'';
+  
 }
 
 onSearch(value:any)

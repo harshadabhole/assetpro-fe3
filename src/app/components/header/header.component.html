@@ -1,41 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-style">
-    <img class="ml-4 mt-1" src="../../../assets/images/logo-logo-corner.png" height="50" width="100">
-        <div class="container mt-1">
-          <div class="row" style="margin-left:100px;">
-              <div class="col-6">
-                  <div class="customSearch">
-                      <input type="text" placeholder="Select Company"
-                          (focusin)="showCompany = true" 
-                          (blur)="showCompany = false" 
-                          (input)="onSearch($event.target.value)"
-                          [(ngModel)]="selectedOption">
-                      <ul *ngIf="showCompany">
-                          <span *ngIf="showCompanyList">
-                              <li *ngFor="let option of companyItems" (mousedown)="onChangeCompany(option.Name)">{{ option.Name }}</li>
-                          </span>
-                          <span *ngIf="!showCompanyList">
-                              <li>No Company Found</li>
-                          </span>
-                      </ul>
-                    </div>
-              </div>
-              <div class="col-6">
-                  <div class="customSearch">
-                      <input type="text" placeholder="Select Site"
-                          (focusin)="showSites = true" 
-                          (focusout)="showSites = false" 
-                          (keyup)="onSearchSite($event.target.value)"
-                          [(ngModel)]="selectDeptOption">
-                      <ul *ngIf="showSites">
-                          <span *ngIf="showSiteList">
-                              <li *ngFor="let option of listItems" (mousedown)="onChangeSite(option.Name)">{{ option.Name }}</li>
-                          </span>
-                          <span *ngIf="!showSiteList">
-                              <li>No Sites Found</li>
-                          </span>
-                      </ul>
-                    </div>
-              </div>
-          </div>
-      </div>
+
+<nav role="navigation" class="primary-navigation">
+    <img class="ml-3 mt-0 mr-5" src="../../../assets/images/logo-logo-corner.png" height="50" width="100">
+  <ul>
+    
+     <li id="company">
+        <input [(ngModel)]="Company" type="text" class="form-control" placeholder="Select Company" (input)="onSearch($event.target.value)">
+      <ul id="companylist" class="dropdown">
+        <span *ngIf="showCompanyList">
+            <li *ngFor="let option of companyItems" (click)="onChangeCompany(option.Name)">{{ option.Name }}</li>
+        </span>
+        <span *ngIf="!showCompanyList">
+            <li>No Company Found</li>
+        </span>
+    </ul>
+    </li>
+  </ul>
+
+  <ul *ngIf="Company!=''">
+    <li id="site">
+        <input [(ngModel)]="Site" type="text" class="form-control" placeholder="Select Site" (keyup)="onSearchSite($event.target.value)">
+
+     <ul id="sitelist" class="dropdown">
+        <span *ngIf="showSiteList">
+            <li *ngFor="let option of listItems" (click)="onChangeSite(option.Name)">{{ option.Name }}</li>
+        </span>
+        <span *ngIf="!showSiteList">
+            <li style="cursor: not-allowed;">No Sites Found</li>
+        </span>
+     </ul>
+   </li>
+ </ul>
 </nav>
