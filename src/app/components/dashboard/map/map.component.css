@@ -107,3 +107,11 @@
   /* ::ng-deep span.badge {
     color: #000000 !important;
   } */
+
+  .badgeColor {
+    color: white !important;
+  }
+  span.badge {
+    color: white !important;
+
+  }

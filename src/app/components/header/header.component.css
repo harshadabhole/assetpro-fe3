@@ -20,7 +20,7 @@ nav.primary-navigation {
   text-align: center;
   background-color: #ffffff;
   border-bottom: 1px solid rgb(187, 186, 186);
-  box-shadow: 0px 0px 20px #3ca0e7 !important;
+  box-shadow: 0px 0px 20px #8093a26e !important;
 }
 
 nav.primary-navigation ul li {
@@ -82,7 +82,7 @@ nav.primary-navigation ul input {
 
 nav.primary-navigation ul input:hover {
   margin-top:0px ;
-  border: 3px solid rgb(118, 158, 219);
+  /* border: 3px solid rgb(118, 158, 219); */
 }
 
 nav.primary-navigation ul li ul {
@@ -154,4 +154,6 @@ ul::-webkit-scrollbar-thumb {
 
 
 
-
+.form-control:hover {
+  box-shadow: 0 0 0 0.2rem rgb(128 147 162 / 17%) !important;
+}

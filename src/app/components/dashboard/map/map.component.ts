@@ -8,195 +8,10 @@ import 'leaflet.markercluster';
 import { MarkerClusterGroup } from 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import { SiteService } from 'src/app/shared/services/site.service';
 
-interface CustomMarkerOptions extends L.MarkerOptions {
-  iconCreateFunction: (icon: HTMLElement, marker: L.Marker) => HTMLElement;
+interface ExtendedMarkerOptions extends L.MarkerOptions {
+  objectData?: any; // Replace 'any' with the specific type of your object if known
 }
 
-const APIres = {
-  "chargers": [
-    {
-      "name":"vijay",
-      "id":"1234567",
-      "lat":51.5,
-      "long":-0.09,
-      "status1":"charging",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    },
-        {
-      "name":"harshada",
-      "id":"1234567",
-      "lat":51.49,
-      "long":-0.1,
-      "status1":"charging",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":null,
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    },
-
-        {
-      "name":"abhishek",
-      "id":"1234567",
-      "lat":51.51,
-      "long":-0.07,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    },
-        {
-      "name":"janhavi",
-      "id":"1234567",
-      "lat":51.5,
-      "long":-0.05,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    }
-,
-        {
-      "name":"anupam",
-      "id":"1234567",
-      "lat":51.49,
-      "long":-0.06,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    }
-,
-        {
-      "name":"akshay",
-      "id":"1234567",
-      "lat":51.46,
-      "long":-0.05,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    }
-,
-        {
-      "name":"omkar",
-      "id":"1234567",
-      "lat":51.99,
-      "long":-0.09,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    }
-,
-        {
-      "name":"dipali",
-      "id":"1234567",
-      "lat":18.5565,
-      "long":73.7730,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    },
-        {
-      "name":"khushbu",
-      "id":"1234567",
-      "lat":23.99,
-      "long":33.00,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    },
-        {
-      "name":"srk",
-      "id":"1234567",
-      "lat":23.99,
-      "long":33.00,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    },
-        {
-      "name":"rohan",
-      "id":"1234567",
-      "lat":23.99,
-      "long":33.00,
-      "status1":"available",
-      "output1":"22",
-      "temp1":"23",
-      "Soc1":"",
-      "lastseen1":"",
-      "status2":"faulted",
-      "output2":"22",
-      "temp2":"23",
-      "Soc2":"",
-      "lastseen2":""
-    }
-  ]
-}
 
 @Component({
   selector: 'app-map',
@@ -212,27 +27,14 @@ export class MapComponent implements OnInit {
 
   constructor(private _siteService:SiteService) {
     this._siteService.updatedSiteId.subscribe((res: any) => {
-      this.selectedSite = this._siteService.getselectedSite();
-      
-     
-      
+      this.selectedSite = this._siteService.getselectedSite();     
 
       if(this.selectedSite !== '') {
-        console.log('inside constructor if')
         this.clearMarkers();
         this.markers = [];
         this.getAllMarkers();
-      //   this.markers.forEach((marker) => {
-      //     console.log('qwertyuiop', marker)
-      //     this.map.removeLayer(marker)
-       
-      // })
      
     }
-  // else{
-    // this.markers = [];
-    // this.getAllMarkers();
-  // }
 }
   )   
   }
@@ -242,64 +44,40 @@ export class MapComponent implements OnInit {
 
     if(this.map){
       this.map.eachLayer((layer)=>{
-        console.log('vvvvvvvvvvvv',layer)
         if(layer.options.pane=='markerPane'){
-          console.log('vvvvvvvvvvvvddd')
         this.map.removeLayer(layer)
         }
-        // console.log('qwertyuiop', layer.options.pane)
     })
     }
 
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   attribution: '&copy; OpenStreetMap contributors'
-    // }).addTo(this.map);
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }).addTo(this.map);
 
-
-    this.markerClusterGroup = L.markerClusterGroup();
-    // this.getAllMarkers()
-    // this.addMarkers();
-    // if(this.map){
-    //   this.map.eachLayer((layer)=>{
-    //     console.log('qwertyuiop', layer.options.pane)
-    // })
-    // }
-
+    this.markerClusterGroup = L.markerClusterGroup({
+      iconCreateFunction: this.customClusterIcon
+    });
   }
   
 
   clearMarkers() {
-    console.log('clearMarkers',this.markers);
     this.markerClusterGroup.clearLayers();
-    // this.markers.forEach(marker => {
-    //   console.log('markeerrrrrererer', marker)
-    //   // this.map.removeLayer(marker); 
-    //   console.log('this.markerCluster b', this.markerClusterGroup)
-    //   this.markerClusterGroup.clearMarkers()
-    //   console.log('this.markerCluster a', this.markerClusterGroup)
-    // });
     this.markers = [];
   }
 
   getAllMarkers() {
-    console.log('getAllMarkers',this.selectedSite);
     this.markers = [];
     this._siteService.getAllMarkers(this.selectedSite).subscribe((res:any)=>{
-      console.log('getMarker res',res);
     this.markers = [];
       this.addMarkers(res.Data);
 
     })
   }
   addMarkers(markersAPIRes:any) {
- console.log('markersmarkersmarkersmarkers',markersAPIRes)
     
 this.markers = [];
-    markersAPIRes.forEach(charger => { 
+markersAPIRes.forEach(charger => { 
       const src = "../../../../assets/images/green.png";
       const divHtml = ``;
       let portIcon1 = null;
@@ -326,10 +104,8 @@ this.markers = [];
       if(charger.Status1 === null && charger.Status2 === null){
         iconHtml =`<div class="icon-3" style="display:inline-flex;"><div class="bg-marker icon-3" style="margin-right:3px"  ><b class="icon-3">${charger.Name}</b><img src="${"../../../../assets/images/Charger.png"}" class="icon-3" style="width:25px"></img></div></div>`
       }else if(charger.Status2 === null) {
-        console.log('if charger.Status2',charger.Status2)
         iconHtml = `<div class="icon-1" style="display:inline-flex;"><div class="bg-marker icon-1" style="margin-right:3px"  ><b class="icon-1">Port A</b><img src="${portIcon1}" class="img-style icon-1 mt-1"></img></div></div>`
       }else if(charger.Status2 !== null){
-        console.log('else charger.Status2',charger.Status2)
       iconHtml =`<div style="display:inline-flex;"><div class="bg-marker icon-1" style="margin-right:3px"  ><b class="icon-1">Port A</b><img src="${portIcon1}" class="img-style icon-1 mt-1"></img></div><div  class="bg-marker icon-2" ><b class="icon-2">Port B</b><img src="${portIcon2}" class="img-style icon-2 mt-1"></img></div></div>`
       }
     
@@ -337,65 +113,22 @@ this.markers = [];
         className: 'custom-icon',
         html: iconHtml
       })
-      let previousPopup = null;
-      let previousLat = null;
-let previousLon = null;
 
-
-console.log('markersmarkersmarkersmarkers --', this.markers)
 // L.marker
       this.markers.push(
-        L.marker([charger.Lat, charger.Lon], { icon: icon })
+        L.marker([charger.Lat, charger.Lon], { icon: icon , objectData: charger ,status1:charger.Status1,status2:charger.Status2} as ExtendedMarkerOptions)
           .bindPopup("", { autoClose: false })
           .on("click", function (event) {
-            const pop = event.target;
-            const popup = pop.getPopup();
+    
 
-            if (popup && !popup.isOpen()) {
-              console.log('iffff')
-              pop.openPopup();
-            }else {
-            console.log("elseeee")
-            // pop.closePopup()
-            }
-            console.log('event', event)
-            const currentLat = charger.Lat;
-    const currentLon = charger.Lon;
-    const prevLat = previousLat;
-    const prevLon = previousLon;
-    console.log("Coordinates prev",prevLat,prevLon)
-    console.log("Coordinates current",currentLat,currentLon)
-    // Compare the current coordinates with the previous values
-    if ((previousLat !== currentLat || previousLon !== currentLon) && (previousLat !== null && previousLon !== null)) {
-      // Coordinates have changed
-      console.log("Coordinates have changed");
-      pop.closePopup()
-    } else if(previousLat === currentLat && previousLon === currentLon){
-      // Coordinates are the same
-      console.log("Coordinates are the same");
-    }
-
-    // Update the previous values
-    previousLat = currentLat;
-    previousLon = currentLon;
-    console.log("Coordinates prev -- ",prevLat,prevLon)
-    console.log("Coordinates current -- ",currentLat,currentLon)
-
-            
-            
             const clickedElement = event.originalEvent.target as HTMLElement;
             const markerPopup = document.querySelector('.leaflet-popup-content') as HTMLDivElement;
-            // markerPopup.innerHTML = ``;
-            console.log('markerPopup---',markerPopup)
             let iconType: string;
             if (clickedElement.classList.contains("icon-1") && markerPopup) {
-              console.log('inside click icon 1')
               iconType = "icon-1";
             } else if (clickedElement.classList.contains("icon-2") && markerPopup) {
-              console.log('inside click icon 2')
               iconType = "icon-2";
             }else if (clickedElement.classList.contains("icon-3")) {
-              console.log('inside click icon 3')
               iconType = "icon-3";
             }
             let previousPopupContent = markerPopup;
@@ -403,52 +136,69 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
               const delayedPopupContent = document.createElement('div');
               delayedPopupContent.classList.add('leaflet-popup-content');
               delayedPopupContent.style.width ="max-content"
-              console.log('setTime poppp', delayedPopupContent.innerHTML);
               
               delayedPopupContent.innerHTML = createPopupContent(charger, iconType);
               if (delayedPopupContent.innerHTML !== previousPopupContent.innerHTML) {
-                console.log('inside if 1')
               if (markerPopup.parentNode && delayedPopupContent.innerHTML) {
                 markerPopup.parentNode.replaceChild(delayedPopupContent, markerPopup);
                 markerPopup.style.width = "max-content";
               }
             }
-              // markerPopup.innerHTML = delayedPopupContent;
-             
-            // }, 300);
-
-
-
-            // const popupContent = createPopupContent(charger, iconType);
-            // // const popupContent = setTimeout(createPopupContent(charger, iconType), 500);
-            //   // console.log('poppppp', popupContent)
-            //   console.log('setTime poppp', iconType)
-            //   if(markerPopup.parentNode) {
-            //     markerPopup.innerHTML = popupContent;
-            //     markerPopup.style.width = "max-content";
-            //   }
-            const element = document.querySelector('.bg-marker.icon-1');
+            const element = document.querySelectorAll('.bg-marker.icon-1');
             if(element) {
+              element.forEach(element => {
+                element.classList.add('port-a')
+                element.addEventListener('mouseout', function(event) {
+                  const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
+                  if(closeButton) {
+                    element.classList.remove('port-a')
+                    closeButton.click();
+                  }
+                });
+              });
+             
+            }
+            const element1 = document.querySelectorAll('.bg-marker.icon-2');
+            if(element1) {
+              element1.forEach(element => {
+                element.classList.add('port-b')
               element.addEventListener('mouseout', function(event) {
-                console.log('evenet')
                 const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                closeButton.click();
+                 if(closeButton) {
+                  element.classList.remove('port-b')
+                  closeButton.click();
+                }
+               });
               });
             }
-            const element1 = document.querySelector('.bg-marker.icon-2');
-            if(element1) {
-              element1.addEventListener('mouseout', function(event) {
-                const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                 closeButton.click();
-               });
-            }
             
-            const element2 = document.querySelector('.icon-3');
+            const element2 = document.querySelectorAll('.icon-3');
             if(element2) {
-              element2.addEventListener('mouseout', function(event) {
-                const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
-                 closeButton.click();
-               });
+              element2.forEach(element => {
+                element.classList.add('port-c')
+                element.addEventListener('mouseout', function(event) {
+                  const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
+                   if(closeButton) {
+                    element.classList.remove('port-c')
+                    closeButton.click();
+                  }
+                 });
+              });
+           
+            }
+          }).on("mouseover", function(event) {
+            console.log('inside hover mouseover', event);
+            const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
+            if(closeButton) {
+              closeButton.click();
+            }
+           
+          }).on("mouseout", function(event) {
+            console.log('inside hover mouseout', event);
+            const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
+            if(closeButton){
+              
+              closeButton.click();
             }
           })
       );
@@ -457,22 +207,22 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
     function createPopupContent(charger: any, iconType: string): string {
       console.log('chargercharger',charger)
         const imageSrc = "../../../../assets/images/car.jpg";
-        let status, voltage, power, soc ,paired;
+        let status, voltage, power, soc ,paired, last;
       
         if (iconType === "icon-1") {
-          console.log('inside if icon 1')
           status = charger.Status1;
           voltage = charger.Voltage1;
           power = charger.Power1;
           soc = charger.SoC1;
           paired  = charger.Paired1;
+          last = charger.LastSeen != undefined? charger.LastSeen : null;
         } else if (iconType === "icon-2") {
-          console.log('inside else if icon 2')
           status = charger.Status2;
           voltage = charger.Voltage2;
           power = charger.Power2;
           soc = charger.SoC2;
           paired  = charger.Paired2;
+          last = charger.LastSeen != undefined? charger.LastSeen : null;
         }
       
         if(iconType === "icon-3") {
@@ -493,9 +243,10 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
             <div>
               <h5 style="font: normal normal bold 18px Montserrat;letter-spacing: 0px;opacity: 1;">${charger.Name}</h5>
               <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging'}">${status}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Last Seen</b>:&nbsp;<span>${last}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Power</b>:&nbsp;<span>${power}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Soc</b>:&nbsp;<span>${soc}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>${power}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>SoC</b>:&nbsp;<span>${soc}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Paired</b>:&nbsp;<span>${paired}</span></p>
             </div>
           </div>`;
@@ -509,44 +260,93 @@ console.log('markersmarkersmarkersmarkers --', this.markers)
 
     this.markerClusterGroup.addLayers(this.markers);
     this.map.addLayer(this.markerClusterGroup);
+    this.markerClusterGroup.on('clustermouseover', (event) => {
+      const cluster = event.layer;
+      const childMarkers = cluster.getAllChildMarkers();
+      // Access individual marker details
+      let popupContent = ``;
+      
+      childMarkers.forEach((marker) => {
+        let portIconColor1 = null;
+        let portIconColor2 = null;
+        const markerObj = (marker.options as ExtendedMarkerOptions).objectData;
+
+      switch(markerObj.Status1) {
+        case 'Charging' : portIconColor1 = "#FCC200" ;break;
+        case 'Available' : portIconColor1 = "#01AE4F" ;break;
+        case 'Faulted' : portIconColor1 = "#FC4842" ;break;
+        default : portIconColor1 = "#FC4842" ;break;
+      }
+      switch(markerObj.Status2) {
+        case 'Charging' : portIconColor2 = "#FCC200" ;break;
+        case 'Available' : portIconColor2 = "#01AE4F" ;break;
+        case 'Faulted' : portIconColor2 = "#FC4842" ;break;
+        case null :  {
+          portIconColor2 = "#FC4842";
+
+        };break;
+        default : portIconColor2 = "#FC4842" ;break;
+      }
+
+        
+        if(markerObj.Status1 !== null && markerObj.Status2 !== null){
+          popupContent = popupContent + `<span>${markerObj.Name} - </span><span class="badge" style="color:'white ';background-color:${portIconColor1}">Port A</span><br><span>${markerObj.Name} - </span><span class="badge" style="color:'white ';background-color:${portIconColor2}">Port B</span><br>`;
+        }else if(markerObj.Status1 === null && markerObj.Status2 === null){
+          popupContent = popupContent + `<span>${markerObj.Name}</span><br>`;
+        }else if(markerObj.Status2 === null && markerObj.Status1 !== null) {
+          popupContent = popupContent + `<span>${markerObj.Name} - </span><span class="badge" style="color:'white ';background-color:${portIconColor1}">Port A</span><br>`;
+        }else if(markerObj.Status1 === null&& markerObj.Status2 !== null) {
+          popupContent = popupContent + `<span>${markerObj.Name} - </span><span class="badge" style="color:'white ';background-color:${portIconColor2}">Port B</span><br>`;
+        }
+      });
+
+       // Bind the popup to the cluster
+       cluster.bindPopup(popupContent).openPopup();
+    });
+    this.markerClusterGroup.on('clustermouseout', (event) => {
+      // Perform any desired actions when mouse moves out of the cluster
+      console.log('clustermouseout')
+      const closeButton = document.querySelector('a.leaflet-popup-close-button') as HTMLElement;
+      closeButton.click();
+    });
     
     if(this.markers[0] != undefined){
-      // this.map.flyTo([markersAPIRes[0].Lat, markersAPIRes[0].Lon], 12)
       this.map.flyTo([this.markers[0]._latlng.lat, this.markers[0]._latlng.lng],15)
     }else{
       this.map.flyTo([0, 0], 1)
     }
-
-    
-    if(this.map){
-      this.map.eachLayer((layer)=>{
-        console.log('qwertyuiop', layer.options.pane)
-    })
-    }
-    
   }
-
-  getStatusStyle(status: string): object {
-    let style: object = {};
+  customClusterIcon = function (cluster) {
+    const childMarkers = cluster.getAllChildMarkers();
+    let chargingStatus = true;
+    let faultedStatus = false;
+    let chargingCount = 0; 
   
-    if (status === 'Available') {
-      style = {
-        'background-color': 'green',
-        // Add more style properties if needed
-      };
-    } else if (status === 'Faulted') {
-      style = {
-        'background-color': 'red',
-        // Add more style properties if needed
-      };
-    } else if (status === 'Charging') {
-      style = {
-        'background-color': 'yellow',
-        // Add more style properties if needed
-      };
+    for (let i = 0, len = childMarkers.length; i < len; i++) {
+      const marker = childMarkers[i];
+      const { status1, status2 } = marker.options;
+  
+      if (typeof status1 !== 'object' && typeof status2 !== 'object') {
+        if (!(status1 === 'Charging' && status2 === 'Charging')) {
+          chargingStatus = false;
+        } else {
+          chargingCount++; 
+        }
+  
+        if (status1 === 'Faulted' || status2 === 'Faulted') {
+          faultedStatus = true;
+          break;
+        }
+      }
     }
   
-    return style;
+    const color = faultedStatus ? 'red' : chargingCount === childMarkers.length ? '#FFA500' : '#01AE4F';
+  
+    return L.divIcon({
+      className: '',
+      iconSize: L.point(40, 40),
+      iconAnchor: L.point(20, 20),
+      html: `<div style="background-color: ${color};border-radius: 50%;display: flex;justify-content: center;align-items: center;width: 40px;height: 40px; font-weight:bold;"><span style="background-color: white; border-radius: 50%;padding: 4px; width: 22px;height: 22px;display: flex;justify-content: center;align-items: center;">${cluster.getChildCount()}</span></div>`
+    });
   }
-
 }
