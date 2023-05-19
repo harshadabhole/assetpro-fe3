@@ -114,6 +114,8 @@ onChangeCompany(value:string)
 
 onSearch(value:any)
 {
+  this.Site=""
+  this.Company=''
   if (value.length > 0) 
   {
     const filteredData = this.companyList.filter((item:any) => {
