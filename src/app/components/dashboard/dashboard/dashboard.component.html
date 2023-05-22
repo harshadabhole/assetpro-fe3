@@ -71,7 +71,7 @@
                       <div class="mt-0 table-wrapper" *ngIf="showCharger">
                         <table class="table table-bordered table-striped">
                           <thead>
-                            <tr style="background-color: #1D3D57BF;">
+                            <tr style="background-color: #5484ab;">
                               <th style="color:white;">Fault Code By Charger</th>
                               <th style="color:white;">Count</th>
                             </tr>
@@ -91,7 +91,7 @@
                       <div class="mt-0 table-wrapper" *ngIf="showFault">
                         <table class="table table-bordered table-striped">
                           <thead>
-                            <tr style="background-color: #1D3D57BF;">
+                            <tr style="background-color: #5484ab;">
                               <th style="color:white;">Fault Code By Fault Code</th>
                               <th style="color:white;">Count</th>
                             </tr>
@@ -133,7 +133,7 @@
         </div>
         <div class="col-2 mt-2"></div>
         <div class="col-4 mt-2 pr-5">
-          <input type="date" class="custom-dates" [value]="date" [max]="date" (change)="onChangeDate($event)">
+          <input type="date" class="custom-dates" [value]="date1" [max]="date1" (change)="onChangeDate($event)">
         </div>
     </div>
     <ng-container *ngIf="!showSpinner">
@@ -142,16 +142,16 @@
         <kendo-chart-tooltip format="{0}" [visible]="true" [shared]="true">
         </kendo-chart-tooltip>
         <kendo-chart-category-axis>
-          <kendo-chart-category-axis-item [categories]="categories" [majorGridLines]="{visible: false}" [labels]="{ rotation: -90,font: '14px Montserrat' }"></kendo-chart-category-axis-item>
+          <kendo-chart-category-axis-item [categories]="categories" [majorGridLines]="{visible: false}" [labels]="{ rotation: 0,font: '14px Montserrat' }"></kendo-chart-category-axis-item>
         </kendo-chart-category-axis>
         <kendo-chart-value-axis>
           <kendo-chart-value-axis-item [name]="'maxKwAxis'" [title]="{ text: 'Max Kw' }" [labels]="{ position: 'start' }"></kendo-chart-value-axis-item>
           <kendo-chart-value-axis-item [name]="'numChargersAxis'" [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }" ></kendo-chart-value-axis-item>
         </kendo-chart-value-axis>
-          <kendo-chart-series>
-            <kendo-chart-series-item [line]="{ style: 'smooth'}" type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'"></kendo-chart-series-item>
-            <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#ADD8E6" [gap]="3"></kendo-chart-series-item>
-          </kendo-chart-series>
+        <kendo-chart-series>
+          <kendo-chart-series-item type="line" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#EA6A47" ></kendo-chart-series-item>
+          <kendo-chart-series-item type="line" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#0091D5" [gap]="3"></kendo-chart-series-item>
+        </kendo-chart-series>
     </kendo-chart>
     </ng-container>
     <ng-container *ngIf="showSpinner">

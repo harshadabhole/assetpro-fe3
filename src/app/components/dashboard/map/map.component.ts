@@ -34,6 +34,7 @@ export class MapComponent implements OnInit {
         this.getAllMarkers();
      
     }
+    
 }
   )   
   }
@@ -50,7 +51,7 @@ export class MapComponent implements OnInit {
     }
 
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-      maxZoom: 20,
+      maxZoom: 30,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }).addTo(this.map);
 
@@ -209,21 +210,38 @@ markersAPIRes.forEach(charger => {
       console.log('chargercharger',charger)
         const imageSrc = "../../../../assets/images/car.jpg";
         let status, voltage, power, soc ,paired, last;
-      
+        let ll;
+        const timezoneOffset = new Date().getTimezoneOffset();
+        if (charger.LastSeen != undefined) {
+          const utcTime = new Date(charger.LastSeen).getTime();
+          const localTime = utcTime - timezoneOffset * 60 * 1000;
+          const localDate = new Date(localTime);
+          const year = localDate.getFullYear();
+          const month = String(localDate.getMonth() + 1).padStart(2, '0');
+          const day = String(localDate.getDate()).padStart(2, '0');
+          const hour = String(localDate.getHours()).padStart(2, '0');
+          const minute = String(localDate.getMinutes()).padStart(2, '0');
+          const second = String(localDate.getSeconds()).padStart(2, '0');
+          ll = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
+        } 
+        else {
+          ll = null;
+        }
+
         if (iconType === "icon-1") {
           status = charger.Status1 == 'Idling'? 'Available':charger.Status1;
           voltage = charger.Voltage1;
           power = charger.Power1;
           soc = charger.SoC1;
           paired  = charger.Paired1;
-          last = charger.LastSeen != undefined? charger.LastSeen : null;
+          last = ll;
         } else if (iconType === "icon-2") {
           status = charger.Status2 == 'Idling'? 'Available':charger.Status2;
           voltage = charger.Voltage2;
           power = charger.Power2;
           soc = charger.SoC2;
           paired  = charger.Paired2;
-          last = charger.LastSeen != undefined? charger.LastSeen : null;
+          last = ll;
         }
       
         if(iconType === "icon-3") {
@@ -231,7 +249,7 @@ markersAPIRes.forEach(charger => {
           <div style="display: flex; align-items: center;">
             <img src="${"../../../../assets/images/Charger.png"}" style="width: 50px; margin-right: 10px;">
             <div>
-              <h5>${charger.Name}</h5>
+              <h5 style="font: normal normal bold 0.95rem Montserrat;letter-spacing: 0px;opacity: 1;">Name:&nbsp;${charger.Name}</h5>
             </div>
           </div>`;
         }else if(iconType === "icon-1" || iconType === "icon-2"){
@@ -242,13 +260,13 @@ markersAPIRes.forEach(charger => {
           <img src="${iconType === "icon-1" ? portIcon1 : portIcon2}" style="width: 50px; margin-right: 10px;">
           </div>
             <div>
-              <h5 style="font: normal normal bold 18px Montserrat;letter-spacing: 0px;opacity: 1;">${charger.Name}</h5>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging' || ${status} == 'Equalizing' }">${status}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Last Seen</b>:&nbsp;<span>${last}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>${power}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>SoC</b>:&nbsp;<span>${soc}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Paired</b>:&nbsp;<span>${paired}</span></p>
+              <h5 style="font: normal normal bold 0.95rem Montserrat;letter-spacing: 0px;opacity: 1;">Name:&nbsp;${charger.Name}</h5>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging' || ${status} == 'Equalizing' }">${status}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Last Seen</b>:&nbsp;<span>${last}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage} V</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>${power} A</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>SoC</b>:&nbsp;<span>${soc}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Paired</b>:&nbsp;<span>${paired}</span></p>
             </div>
           </div>`;
         }

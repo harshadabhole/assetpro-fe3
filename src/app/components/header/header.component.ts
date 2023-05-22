@@ -28,6 +28,7 @@ beforeUnloadHandler(event) {
   showCompanyList: boolean;
   Company:string="";
   Site:string="";
+  finalCompany:any=[];
 
   constructor(
     private _siteService: SiteService,
@@ -76,7 +77,8 @@ getAllCompany()
         Name:element.Name
       }
       this.companyItems.push(object);
-      this.companyList.push(object)
+      this.companyList.push(object);
+      this.finalCompany.push(object);
     })
   })
 }
@@ -112,25 +114,27 @@ onChangeCompany(value:string)
   
 }
 
-onSearch(value:any)
-{
-  this.Site=""
-  this.Company=''
-  if (value.length > 0) 
-  {
-    const filteredData = this.companyList.filter((item:any) => {
-      const regex = new RegExp(value, "i");
+onSearch(value: string) {
+  this.Site = '';
+ 
+
+  if (value.length > 0) {
+    const filteredData = this.companyList.filter((item: any) => {
+      const regex = new RegExp(value, 'i');
       return regex.test(item.Name);
     });
-    this.companyItems=filteredData
-    
-  }
-   else 
+
+    this.companyItems = filteredData;
+    this._siteService.changeSite('');
+  } else 
   {
-    this.getAllCompany();
-    this.selectDeptOption='';
+    this.Company = '';
+    this._siteService.changeCompany('');
+    this._siteService.changeSite('');
+    this.companyItems=this.finalCompany;
   }
 }
+
 
 onSearchSite(value:any)
 {

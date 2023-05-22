@@ -1,11 +1,10 @@
-
 <nav role="navigation" class="primary-navigation">
     <img class="ml-3 mt-0 mr-5" src="../../../assets/images/logo-logo-corner.png" height="50" width="100">
   <ul>
     
      <li id="company">
         <div class="input-icons">
-          <input [(ngModel)]="Company" type="text" class="form-control with-icon" placeholder="Select Company" (input)="onSearch($event.target.value)">
+          <input type="text" class="form-control with-icon" placeholder="Select Company" [value]="Company" (keyup)="onSearch($event.target.value)">
         </div>
         
       <ul id="companylist" class="dropdown">

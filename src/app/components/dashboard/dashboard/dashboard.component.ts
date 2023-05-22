@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
 
   last7DaysDates:any=[];
   dates:any;
-  date:any;
+  date1:any;
   currentDate:any;
   daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   startDate:any;
@@ -32,14 +32,12 @@ export class DashboardComponent implements OnInit {
   offlineCount:number=0;
   unitCounts: any=[];
   showSpinner: boolean=false;
-  title: string='By Charger';
   faultCodes: any=[];
   showFaultCode: boolean=false;
   selectedCompany:any;
   faultCodesByCharger: any;
   showCharger: boolean=false;
   showFault: boolean=false;
-  seriesStyle = { fill: 'linear-gradient(to bottom, #1D3D57, #FFFFFF)', className: 'my-class' };
 
   constructor(
     private datePipe: DatePipe,
@@ -48,6 +46,15 @@ export class DashboardComponent implements OnInit {
       this.loading=true;
       this._siteService.updatedCompanyId.subscribe((res: any) => {
         this.selectedCompany = this._siteService.getselectedCompany();
+        if(this.selectedCompany == '')
+        {
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = (today.getMonth() + 1).toString().padStart(2, '0');
+          const day = today.getDate().toString().padStart(2, '0');
+          this.date1 = `${year}-${month}-${day}`;
+        }
+       
       })
       this._siteService.updatedSiteId.subscribe((res: any) => {
         this.selectedSite = this._siteService.getselectedSite();
@@ -63,6 +70,11 @@ export class DashboardComponent implements OnInit {
         else
         {
           this.showFaultCode=false;
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = (today.getMonth() + 1).toString().padStart(2, '0');
+          const day = today.getDate().toString().padStart(2, '0');
+          this.date1 = `${year}-${month}-${day}`;
         }
       })
       
@@ -70,9 +82,7 @@ export class DashboardComponent implements OnInit {
    
 
   ngOnInit() {
-    this.currentDate = new Date();
-    this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    this.getLastSevenDays(); 
+
   }
   
   
@@ -140,10 +150,14 @@ export class DashboardComponent implements OnInit {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
+
     const year1 = d.getFullYear();
     const month1 = String(d.getMonth() + 1).padStart(2, '0');
     const day1 = String(d.getDate()).padStart(2, '0');
+
     this.endDate=`${year}-${month}-${day}`;
+    this.date1=this.endDate;
+  
     const d1=`${year1}-${month1}-${day1}`
     const data={
       SiteID:this.selectedSite,
@@ -152,7 +166,6 @@ export class DashboardComponent implements OnInit {
       if(d1 != this.endDate)
       {
         this._siteService.getPowerUsage(data).subscribe((res:any)=>{
-          console.log("Power Usage on date change----",res.Data)
         this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
         this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
         this.categories=res.Data.map((obj:any)=>{obj.Hour});
@@ -264,18 +277,5 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  onToggle(event:any)
-  {
-    this.showFaultCode=true;
-    if(event.target.checked == false)
-    {
-      this.title='By Fault Code';
-      this.getFaultCodeByFaultCode();
-    }
-    else
-    {
-      this.title='By Charger';
-      this.getFaultCodeByCharger();
-    }
-  }
+  
 }
