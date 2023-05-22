@@ -23,7 +23,6 @@ export class MapComponent implements OnInit {
   private markerClusterGroup: MarkerClusterGroup;
   selectedSite:any;
   markers =[];
-  
 
   constructor(private _siteService:SiteService) {
     this._siteService.updatedSiteId.subscribe((res: any) => {
@@ -86,14 +85,16 @@ markersAPIRes.forEach(charger => {
       let iconHtml =`<div style="display:inline-flex;"><div class="bg-marker icon-1" style="margin-right:3px"  ><img src="${portIcon1}" class="img-style icon-1"></img></div><div  class="bg-marker icon-2" ><img src="${portIcon2}" class="img-style icon-2"></img></div></div>`
       switch(charger.Status1) {
         case 'Charging' : portIcon1 = "../../../../assets/images/yellow.png" ;break;
-        case 'Available' : portIcon1 = "../../../../assets/images/green.png" ;break;
+        case 'Idling' : portIcon1 = "../../../../assets/images/green.png" ;break;
         case 'Faulted' : portIcon1 = "../../../../assets/images/red.png" ;break;
+        case 'Equalizing' : portIcon1 = "../../../../assets/images/yellow.png" ;break;
         default : portIcon1 = "../../../../assets/images/red.png" ;break;
       }
       switch(charger.Status2) {
         case 'Charging' : portIcon2 = "../../../../assets/images/yellow.png" ;break;
-        case 'Available' : portIcon2 = "../../../../assets/images/green.png" ;break;
+        case 'Idling' : portIcon2 = "../../../../assets/images/green.png" ;break;
         case 'Faulted' : portIcon2 = "../../../../assets/images/red.png" ;break;
+        case 'Equalizing' : portIcon2 = "../../../../assets/images/yellow.png" ;break;
         case null :  {
           portIcon2 = "../../../../assets/images/red.png";
           iconHtml = `<div style="display:inline-flex;"><div class="bg-marker icon-1" style="margin-right:3px"  ><img src="${portIcon1}" class="img-style icon-1 mt-1"></img></div></div>`
@@ -210,14 +211,14 @@ markersAPIRes.forEach(charger => {
         let status, voltage, power, soc ,paired, last;
       
         if (iconType === "icon-1") {
-          status = charger.Status1;
+          status = charger.Status1 == 'Idling'? 'Available':charger.Status1;
           voltage = charger.Voltage1;
           power = charger.Power1;
           soc = charger.SoC1;
           paired  = charger.Paired1;
           last = charger.LastSeen != undefined? charger.LastSeen : null;
         } else if (iconType === "icon-2") {
-          status = charger.Status2;
+          status = charger.Status2 == 'Idling'? 'Available':charger.Status2;
           voltage = charger.Voltage2;
           power = charger.Power2;
           soc = charger.SoC2;
@@ -242,7 +243,7 @@ markersAPIRes.forEach(charger => {
           </div>
             <div>
               <h5 style="font: normal normal bold 18px Montserrat;letter-spacing: 0px;opacity: 1;">${charger.Name}</h5>
-              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging'}">${status}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging' || ${status} == 'Equalizing' }">${status}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Last Seen</b>:&nbsp;<span>${last}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 16px Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>${power}</span></p>
@@ -273,14 +274,16 @@ markersAPIRes.forEach(charger => {
 
       switch(markerObj.Status1) {
         case 'Charging' : portIconColor1 = "#FCC200" ;break;
-        case 'Available' : portIconColor1 = "#01AE4F" ;break;
+        case 'Idling' : portIconColor1 = "#01AE4F" ;break;
         case 'Faulted' : portIconColor1 = "#FC4842" ;break;
+        case 'Equalizing' : portIconColor1 = "#FCC200" ;break;
         default : portIconColor1 = "#FC4842" ;break;
       }
       switch(markerObj.Status2) {
         case 'Charging' : portIconColor2 = "#FCC200" ;break;
-        case 'Available' : portIconColor2 = "#01AE4F" ;break;
+        case 'Idling' : portIconColor2 = "#01AE4F" ;break;
         case 'Faulted' : portIconColor2 = "#FC4842" ;break;
+        case 'Equalizing' : portIconColor2 = "#FCC200" ;break;
         case null :  {
           portIconColor2 = "#FC4842";
 
@@ -316,13 +319,20 @@ markersAPIRes.forEach(charger => {
       this.map.flyTo([0, 0], 1)
     }
   }
-  customClusterIcon = function (cluster) {
+
+  customClusterIcon = function(cluster) {
     const childMarkers = cluster.getAllChildMarkers();
     let chargingStatus = true;
     let faultedStatus = false;
-    let chargingCount = 0; 
+    let chargingCount = 0;
+    let eqStatus = true;
+    let eqCount = 0;
+    let idlingstatus = false;
+    let sameStatus = false;
+    
+    const len = childMarkers.length;
   
-    for (let i = 0, len = childMarkers.length; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       const marker = childMarkers[i];
       const { status1, status2 } = marker.options;
   
@@ -330,23 +340,54 @@ markersAPIRes.forEach(charger => {
         if (!(status1 === 'Charging' && status2 === 'Charging')) {
           chargingStatus = false;
         } else {
-          chargingCount++; 
+          chargingCount++;
+        }
+        if (!(status1 === 'Equalizing' && status2 === 'Equalizing')) {
+          eqStatus = false;
+        } else {
+          eqCount++;
+        }
+  
+        if (
+          (status1 === 'Charging' && status2 === 'Equalizing') ||
+          (status1 === 'Equalizing' && status2 === 'Charging') ||
+          (status1 === 'Charging' && status2 === 'Charging')  ||
+          (status1 === 'Equalizing' && status2 === 'Equalizing')
+        ) {
+          sameStatus = true;
         }
   
         if (status1 === 'Faulted' || status2 === 'Faulted') {
           faultedStatus = true;
           break;
         }
+        if (status1 === 'Idling' || status2 === 'Idling') {
+          idlingstatus = true;
+        }
       }
     }
   
-    const color = faultedStatus ? 'red' : chargingCount === childMarkers.length ? '#FFA500' : '#01AE4F';
+    let color = 'grey';
+    if (faultedStatus) {
+      color = 'red';
+    } else if (chargingCount === len) {
+      color = '#FFA500';
+    } else if (eqCount === len) {
+      color = '#FFA500';
+    } else if (sameStatus && idlingstatus) {
+      color = '#01AE4F';
+    } else if (sameStatus) {
+      color = '#FFA500';
+    } else if (!faultedStatus && idlingstatus) {
+      color = '#01AE4F';
+    }
   
     return L.divIcon({
       className: '',
       iconSize: L.point(40, 40),
       iconAnchor: L.point(20, 20),
-      html: `<div style="background-color: ${color};border-radius: 50%;display: flex;justify-content: center;align-items: center;width: 40px;height: 40px; font-weight:bold;"><span style="background-color: white; border-radius: 50%;padding: 4px; width: 22px;height: 22px;display: flex;justify-content: center;align-items: center;">${cluster.getChildCount()}</span></div>`
+      html: `<div style="background-color: ${color};border-radius: 50%;display: flex;justify-content: center;align-items: center;width: 40px;height: 40px; font-weight:bold;"><span style="background-color: white; border-radius: 50%;padding: 4px; width: 22px;height: 22px;display: flex;justify-content: center;align-items: center;">${cluster.getChildCount()}</span></div>`,
     });
   }
+  
 }
