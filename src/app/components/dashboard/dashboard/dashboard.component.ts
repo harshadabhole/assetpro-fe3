@@ -53,12 +53,13 @@ export class DashboardComponent implements OnInit {
           const month = (today.getMonth() + 1).toString().padStart(2, '0');
           const day = today.getDate().toString().padStart(2, '0');
           this.date1 = `${year}-${month}-${day}`;
+          this.currentDate=`${year}-${month}-${day}`;
         }
        
       })
       this._siteService.updatedSiteId.subscribe((res: any) => {
         this.selectedSite = this._siteService.getselectedSite();
-        if(this.selectedSite != '')
+        if(this.selectedSite !=='')
         {
           this.loading=true;
           this.showFaultCode=true;
@@ -75,6 +76,7 @@ export class DashboardComponent implements OnInit {
           const month = (today.getMonth() + 1).toString().padStart(2, '0');
           const day = today.getDate().toString().padStart(2, '0');
           this.date1 = `${year}-${month}-${day}`;
+          this.currentDate=`${year}-${month}-${day}`;
         }
       })
       
@@ -132,15 +134,6 @@ export class DashboardComponent implements OnInit {
       this.getLastSevenDays();
    }
 
-   onChangeStart(value: Date): void {
-   
-    let x=new Date(value);
-    const year=x.getFullYear();
-    const month=x.getMonth();
-    const day=x.getDate();
-    this.startDate=`${year}-${month}-${day}`
-   
-  }
 
   onChangeDate(event: any): void 
   {
@@ -165,6 +158,9 @@ export class DashboardComponent implements OnInit {
     }
       if(d1 != this.endDate)
       {
+        this.categories=[];
+        this.data1=[];
+        this.data2=[];
         this._siteService.getPowerUsage(data).subscribe((res:any)=>{
         this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
         this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
@@ -174,11 +170,10 @@ export class DashboardComponent implements OnInit {
       else
       {
         this.categories=[];
-        this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
-          const timezoneOffset = new Date().getTimezoneOffset();
-          this.categories=[];
           this.data1=[];
           this.data2=[];
+        this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
+          const timezoneOffset = new Date().getTimezoneOffset();
          res.Data.forEach((element:any)=>
          {
           const utcDate = new Date(element.Hour);
@@ -191,10 +186,9 @@ export class DashboardComponent implements OnInit {
           this.data1.push({ category: hours, value1: element.MaxkW });
           this.data2.push({ category: hours, value2: element.Charger });
         })
-          
         })
       }
-      setInterval( async()=> {this.showSpinner=false;},800)
+      setInterval( async()=> {this.showSpinner=false;},1000)
   }
 
   
@@ -223,6 +217,7 @@ export class DashboardComponent implements OnInit {
 
   getFaultCodeByCharger()
   {
+    this.faultCodesByCharger=[];
     this._siteService.getFaultCodeByCharger(this.selectedSite).subscribe((res:any)=>{
       this.faultCodesByCharger=res.Data
       this.showCharger = res.Data.length > 0 ? true :false
@@ -232,6 +227,7 @@ export class DashboardComponent implements OnInit {
 
   getFaultCodeByFaultCode()
   {
+    this.faultCodes=[];
     this._siteService.getFaultCodeByFaultCode(this.selectedSite).subscribe((res:any)=>{
       this.faultCodes=res.Data;
       this.showFault = res.Data.length > 0 ? true :false
@@ -247,16 +243,14 @@ export class DashboardComponent implements OnInit {
   getPowerUsage()
   {
     this.showSpinner=true;
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
     const data={
       SiteID:this.selectedSite,
-      date:formattedDate
+      date:this.currentDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
+      this.data1=[];
+    this.data2=[];
+    this.categories=[];
       const timezoneOffset = new Date().getTimezoneOffset();
 
       for (const element of res.Data) 
@@ -272,7 +266,7 @@ export class DashboardComponent implements OnInit {
         this.data1.push({ category: hours, value1: element.MaxkW });
         this.data2.push({ category: hours, value2: element.Charger });
       }
-      setInterval( async()=> {this.showSpinner=false;},800)
+      this.showSpinner=false;
     })
   }
 
