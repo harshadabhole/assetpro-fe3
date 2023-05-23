@@ -257,7 +257,6 @@ export class DashboardComponent implements OnInit {
       date:formattedDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
-      console.log("Power Usage ---",res.Data)
       const timezoneOffset = new Date().getTimezoneOffset();
 
       for (const element of res.Data) 

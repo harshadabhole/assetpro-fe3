@@ -7,7 +7,7 @@
           <input type="text" class="form-control with-icon" placeholder="Select Company" [value]="Company" (keyup)="onSearch($event.target.value)">
         </div>
         
-      <ul id="companylist" class="dropdown">
+      <ul id="companylist" class="dropdown" (mouseenter)="onmouseenterCompany()">
         <span *ngIf="showCompanyList">
             <li *ngFor="let option of companyItems" (click)="onChangeCompany(option.Name)">{{ option.Name }}</li>
         </span>
@@ -22,7 +22,7 @@
     <li id="site">
         <input [(ngModel)]="Site" type="text" class="form-control with-icon" placeholder="Select Site" (keyup)="onSearchSite($event.target.value)">
 
-     <ul id="sitelist" class="dropdown">
+     <ul id="sitelist" class="dropdown" (mouseenter)="onmouseenterSite()">
         <span *ngIf="showSiteList">
             <li *ngFor="let option of listItems" (click)="onChangeSite(option.Name)">{{ option.Name }}</li>
         </span>

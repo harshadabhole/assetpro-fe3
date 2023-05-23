@@ -34,18 +34,24 @@ beforeUnloadHandler(event) {
     private _siteService: SiteService,
   ) 
   {
+    this.getAllCompany();
     this.selectedOption = localStorage.getItem('companyName') != null ? localStorage.getItem('companyName') :'';
     this.selectDeptOption = localStorage.getItem('siteName') != null ? localStorage.getItem('siteName') :''
   }
 
 
   ngOnInit() {
-    this.getAllCompany();
+    
+     
+  }
 
+  onmouseenterCompany(){
     document.getElementById('company')!=null ?document.getElementById('company').addEventListener('mouseover', function() {
       document.getElementById('companylist').style.display = 'block'}):'';
     
-      document.getElementById('site')!=null ? document.getElementById('site').addEventListener('mouseover', function() {
+  }
+  onmouseenterSite(){
+    document.getElementById('site')!=null ? document.getElementById('site').addEventListener('mouseover', function() {
       document.getElementById('sitelist').style.display = 'block'}):'';
   }
 
@@ -109,8 +115,8 @@ onChangeCompany(value:string)
   const button = document.getElementById('companylist');
   button.style.display = 'none'
   this.Site="";
-  document.getElementById('site')? document.getElementById('site').addEventListener('mouseover', function() {
-    document.getElementById('sitelist').style.display = 'block'}):'';
+  // document.getElementById('site')? document.getElementById('site').addEventListener('mouseover', function() {
+  //   document.getElementById('sitelist').style.display = 'block'}):'';
   
 }
 

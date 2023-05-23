@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';  
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SiteService {
-  baseUrl: string = "http://localhost:8080/";
+  baseUrl: string = environment.baseUrl;
   constructor(private http: HttpClient) { }
   private selectedSite: any = '';
   private selectedCompany: any = '';
@@ -29,7 +30,6 @@ export class SiteService {
   }
 
   changeCompany(companyId:string) {
-    console.log('IN OBSERVABLE---',companyId)
     this.selectedCompany = companyId;
         this.updateCompanyID.next(companyId);
     }
@@ -85,10 +85,7 @@ getPowerUsage(data:any):Observable<any>{
 }
 
 getAllMarkers(siteID:any):Observable<any>{
-  console.log('siteID', siteID)
   return this.http.get<any>(`${this.baseUrl}api/Asset/getMapDetails/${siteID}`)
-  // return this.http.get<any>(`${this.baseUrl}api/Asset/getMapDetails/BD1D9592-F490-ED11-AA20-02E21D877817`)
-  
 
 }
 

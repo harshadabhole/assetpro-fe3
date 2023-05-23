@@ -27,13 +27,20 @@ export class MapComponent implements OnInit {
   constructor(private _siteService:SiteService) {
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();     
-
       if(this.selectedSite !== '') {
         this.clearMarkers();
         this.markers = [];
         this.getAllMarkers();
      
     }
+    else
+    {
+      if(this.markerClusterGroup != undefined)
+      {
+        this.map.setView([0, 0], 1);
+      }
+    }
+   
     
 }
   )   

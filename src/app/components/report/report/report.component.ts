@@ -99,7 +99,6 @@ ngOnInit() {
 
   onSelectDept(data:any,value:any)
   {
-    console.log("data--",data)
     this.loading = true;
     if(value =='DELETE')
     {

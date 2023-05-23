@@ -32,7 +32,6 @@ total:any;
 
   ngOnInit() {
     this.data=localStorage.getItem('maintenanceStatusReport') != null ? JSON.parse(localStorage.getItem('maintenanceStatusReport')) : JSON.parse(localStorage.getItem('maintenanceHistoricalReport'))
-    console.log("Data----",this.data);
     if(this.showStatusReport == true)
     {
       this.assetName=JSON.parse(localStorage.getItem('assetName'));
