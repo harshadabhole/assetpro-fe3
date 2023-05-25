@@ -257,6 +257,12 @@ markersAPIRes.forEach(charger => {
             <img src="${"../../../../assets/images/Charger.png"}" style="width: 50px; margin-right: 10px;">
             <div>
               <h5 style="font: normal normal bold 0.95rem Montserrat;letter-spacing: 0px;opacity: 1;">Name:&nbsp;${charger.Name}</h5>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span>Out of Range</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Last Seen</b>:&nbsp;<span>N/A</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>N/A</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>N/A</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>SoC</b>:&nbsp;<span>N/A</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Paired</b>:&nbsp;<span>N/A</span></p>
             </div>
           </div>`;
         }else if(iconType === "icon-1" || iconType === "icon-2"){
@@ -392,7 +398,7 @@ markersAPIRes.forEach(charger => {
       }
     }
   
-    let color = 'grey';
+    let color = 'purple';
     if (faultedStatus) {
       color = 'red';
     } else if (chargingCount === len) {
