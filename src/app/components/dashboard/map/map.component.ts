@@ -110,11 +110,11 @@ markersAPIRes.forEach(charger => {
         };break;
         default : portIcon2 = "../../../../assets/images/red.png" ;break;
       }
-      if(charger.Status1 === null && charger.Status2 === null){
+      if(charger.Status1 === null && charger.Status2 === null || charger.Status1 === undefined && charger.Status2 === undefined){
         iconHtml =`<div class="icon-3" style="display:inline-flex;"><div class="bg-marker icon-3" style="margin-right:3px"  ><b class="icon-3">${charger.Name}</b><img src="${"../../../../assets/images/Charger.png"}" class="icon-3" style="width:25px"></img></div></div>`
-      }else if(charger.Status2 === null) {
+      }else if(charger.Status2 === undefined || charger.Status2 === null) {
         iconHtml = `<div class="icon-1" style="display:inline-flex;"><div class="bg-marker icon-1" style="margin-right:3px"  ><b class="icon-1">Port A</b><img src="${portIcon1}" class="img-style icon-1 mt-1"></img></div></div>`
-      }else if(charger.Status2 !== null){
+      }else if(charger.Status2 !== null && charger.Status1 !== null){
       iconHtml =`<div style="display:inline-flex;"><div class="bg-marker icon-1" style="margin-right:3px"  ><b class="icon-1">Port A</b><img src="${portIcon1}" class="img-style icon-1 mt-1"></img></div><div  class="bg-marker icon-2" ><b class="icon-2">Port B</b><img src="${portIcon2}" class="img-style icon-2 mt-1"></img></div></div>`
       }
     
@@ -217,12 +217,10 @@ markersAPIRes.forEach(charger => {
       console.log('chargercharger',charger)
         const imageSrc = "../../../../assets/images/car.jpg";
         let status, voltage, power, soc ,paired, last;
-        let ll;
-        const timezoneOffset = new Date().getTimezoneOffset();
-        if (charger.LastSeen != undefined) {
-          const utcTime = new Date(charger.LastSeen).getTime();
-          const localTime = utcTime - timezoneOffset * 60 * 1000;
-          const localDate = new Date(localTime);
+        let ll, ll1;
+        if (charger.LastSeen1 != undefined) {
+          
+          const localDate = new Date(charger.LastSeen1);
           const year = localDate.getFullYear();
           const month = String(localDate.getMonth() + 1).padStart(2, '0');
           const day = String(localDate.getDate()).padStart(2, '0');
@@ -232,23 +230,37 @@ markersAPIRes.forEach(charger => {
           ll = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
         } 
         else {
-          ll = null;
+          ll = 'N/A';
+        }
+        if (charger.LastSeen2 != undefined) {
+          
+          const localDate = new Date(charger.LastSeen2);
+          const year = localDate.getFullYear();
+          const month = String(localDate.getMonth() + 1).padStart(2, '0');
+          const day = String(localDate.getDate()).padStart(2, '0');
+          const hour = String(localDate.getHours()).padStart(2, '0');
+          const minute = String(localDate.getMinutes()).padStart(2, '0');
+          const second = String(localDate.getSeconds()).padStart(2, '0');
+          ll1 = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
+        } 
+        else {
+          ll1 = 'N/A';
         }
 
         if (iconType === "icon-1") {
           status = charger.Status1 == 'Idling'? 'Available':charger.Status1;
-          voltage = charger.Voltage1;
-          power = charger.Power1;
-          soc = charger.SoC1;
-          paired  = charger.Paired1;
+          voltage = charger.Voltage1 != null? `${charger.Voltage1} V`:'N/A';
+          power = charger.Power1 != null? `${charger.Power1} A`:'N/A';
+          soc = charger.SoC1 != null? charger.SoC1:'N/A';
+          paired  = charger.Paired1 != null ? charger.Paired1:'N/A';
           last = ll;
         } else if (iconType === "icon-2") {
           status = charger.Status2 == 'Idling'? 'Available':charger.Status2;
-          voltage = charger.Voltage2;
-          power = charger.Power2;
-          soc = charger.SoC2;
-          paired  = charger.Paired2;
-          last = ll;
+          voltage = charger.Voltage2 != null? `${charger.Voltage2} V`:'N/A';
+          power = charger.Power2 != null? `${charger.Power2} A`:'N/A';
+          soc = charger.SoC2 != null? charger.SoC2:'N/A';
+          paired  = charger.Paired2 != null ? charger.Paired2:'N/A';
+          last = ll1;
         }
       
         if(iconType === "icon-3") {
@@ -276,8 +288,8 @@ markersAPIRes.forEach(charger => {
               <h5 style="font: normal normal bold 0.95rem Montserrat;letter-spacing: 0px;opacity: 1;">Name:&nbsp;${charger.Name}</h5>
               <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Status</b>:&nbsp;<span [ngClass]="{'text-success': ${status} == 'Available', 'text-danger': ${status} == 'Faulted', 'text-warning': ${status} == 'Charging' || ${status} == 'Equalizing' }">${status}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Last Seen</b>:&nbsp;<span>${last}</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage} V</span></p>
-              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>${power} A</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Voltage</b>:&nbsp;<span>${voltage}</span></p>
+              <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Current</b>:&nbsp;<span>${power}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>SoC</b>:&nbsp;<span>${soc}</span></p>
               <p class="mb-1 mt-1" style="font: normal normal 0.75rem Montserrat;letter-spacing: 0px;opacity: 1;"><b>Paired</b>:&nbsp;<span>${paired}</span></p>
             </div>

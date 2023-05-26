@@ -85,7 +85,7 @@ getPowerUsage(data:any):Observable<any>{
 }
 
 getAllMarkers(siteID:any):Observable<any>{
-  return this.http.get<any>(`${this.baseUrl}api/Asset/getMapDetails/${siteID}`)
+  return this.http.get<any>(`${this.baseUrl}api/Asset/getMap/${siteID}`)
 
 }
 

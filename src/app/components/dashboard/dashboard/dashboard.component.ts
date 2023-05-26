@@ -173,19 +173,9 @@ export class DashboardComponent implements OnInit {
           this.data1=[];
           this.data2=[];
         this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
-          const timezoneOffset = new Date().getTimezoneOffset();
-         res.Data.forEach((element:any)=>
-         {
-          const utcDate = new Date(element.Hour);
-          const localTime = utcDate.getTime() - timezoneOffset * 60 * 1000;
-          const localDate = new Date(localTime);
-  
-          const h = localDate.getHours();
-          const hours = h.toString().padStart(2, '0') + ':00';
-          this.categories.push(hours);
-          this.data1.push({ category: hours, value1: element.MaxkW });
-          this.data2.push({ category: hours, value2: element.Charger });
-        })
+          this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
+          this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+          this.categories=res.Data.map((obj:any)=>{obj.Hour});
         })
       }
       setInterval( async()=> {this.showSpinner=false;},1000)
@@ -251,21 +241,9 @@ export class DashboardComponent implements OnInit {
       this.data1=[];
     this.data2=[];
     this.categories=[];
-      const timezoneOffset = new Date().getTimezoneOffset();
-
-      for (const element of res.Data) 
-      {
-        const utcDate = new Date(element.Hour);
-        const localTime = utcDate.getTime() - timezoneOffset * 60 * 1000;
-        const localDate = new Date(localTime);
-
-        const h = localDate.getHours();
-        const hours = h.toString().padStart(2, '0') + ':00';
-
-        this.categories.push(hours);
-        this.data1.push({ category: hours, value1: element.MaxkW });
-        this.data2.push({ category: hours, value2: element.Charger });
-      }
+    this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
+    this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
+    this.categories=res.Data.map((obj:any)=>{obj.Hour});
       this.showSpinner=false;
     })
   }
