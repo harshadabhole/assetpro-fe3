@@ -30,7 +30,8 @@ export class MapComponent implements OnInit {
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();     
       if(this.selectedSite !== '') {
-        this.clearMarkers();
+        if(this.markerClusterGroup){
+          this.clearMarkers();}
         this.markers = [];
         this.getAllMarkers();
      

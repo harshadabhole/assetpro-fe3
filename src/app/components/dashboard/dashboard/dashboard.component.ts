@@ -46,16 +46,22 @@ export class DashboardComponent implements OnInit {
       this.loading=true;
       this._siteService.updatedCompanyId.subscribe((res: any) => {
         this.selectedCompany = this._siteService.getselectedCompany();
-        if(this.selectedCompany == '')
-        {
-          const today = new Date();
+        // if(this.selectedCompany == '')
+        // {
+
+        //   const today = new Date();
+        //   const year = today.getFullYear();
+        //   const month = (today.getMonth() + 1).toString().padStart(2, '0');
+        //   const day = today.getDate().toString().padStart(2, '0');
+        //   this.date1 = `${year}-${month}-${day}`;
+        //   this.currentDate=`${year}-${month}-${day}`;
+        // }
+        const today = new Date();
           const year = today.getFullYear();
           const month = (today.getMonth() + 1).toString().padStart(2, '0');
           const day = today.getDate().toString().padStart(2, '0');
           this.date1 = `${year}-${month}-${day}`;
-          this.currentDate=`${year}-${month}-${day}`;
-        }
-       
+          this.currentDate=`${year}-${month}-${day}`;       
       })
       this._siteService.updatedSiteId.subscribe((res: any) => {
         this.selectedSite = this._siteService.getselectedSite();
@@ -71,13 +77,14 @@ export class DashboardComponent implements OnInit {
         else
         {
           this.showFaultCode=false;
+        }
           const today = new Date();
           const year = today.getFullYear();
           const month = (today.getMonth() + 1).toString().padStart(2, '0');
           const day = today.getDate().toString().padStart(2, '0');
           this.date1 = `${year}-${month}-${day}`;
           this.currentDate=`${year}-${month}-${day}`;
-        }
+
       })
       
     }

@@ -34,14 +34,22 @@ beforeUnloadHandler(event) {
     private _siteService: SiteService,
   ) 
   {
+  
+    localStorage.getItem('companyID') !=null ? this._siteService.changeCompany( localStorage.getItem('companyID')):''
+    localStorage.getItem('siteID') !=null ? this._siteService.changeSite( localStorage.getItem('siteID')):''
+    this.selectedOption = this.Company = localStorage.getItem('companyName') != null ? localStorage.getItem('companyName') :'';
+    this.selectDeptOption = this.Site = localStorage.getItem('siteName') != null ? localStorage.getItem('siteName') :''
+    // this.Company = localStorage.getItem('companyName') != null ? localStorage.getItem('companyName') :'';
+    // this.Site = localStorage.getItem('siteName') != null ? localStorage.getItem('siteName') :''
     this.getAllCompany();
-    this.selectedOption = localStorage.getItem('companyName') != null ? localStorage.getItem('companyName') :'';
-    this.selectDeptOption = localStorage.getItem('siteName') != null ? localStorage.getItem('siteName') :''
+    localStorage.getItem('companyID') != null ? this.getAllSites(localStorage.getItem('companyID')):''
+    
   }
 
 
   ngOnInit() {
-    
+    // this.selectDeptOption=localStorage.getItem('siteID');
+    // this.siteName=localStorage.getItem('siteName');
      
   }
 
@@ -111,6 +119,10 @@ onChangeCompany(value:string)
   this._siteService.changeCompany(x.ID);
   localStorage.setItem('companyID',x.ID)
   localStorage.setItem('companyName',x.Name)
+
+  localStorage.removeItem('siteName')
+  localStorage.removeItem('siteID')
+
   this.getAllSites(this.selectedCompany)
   const button = document.getElementById('companylist');
   button.style.display = 'none'
