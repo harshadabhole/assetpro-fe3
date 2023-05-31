@@ -149,8 +149,8 @@
           <kendo-chart-value-axis-item [name]="'numChargersAxis'" [title]="{text: 'No of Chargers'}" [labels]="{ position: 'end' }" ></kendo-chart-value-axis-item>
         </kendo-chart-value-axis>
         <kendo-chart-series>
-          <kendo-chart-series-item type="line" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#EA6A47" ></kendo-chart-series-item>
-          <kendo-chart-series-item type="line" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#0091D5" [gap]="3"></kendo-chart-series-item>
+          <kendo-chart-series-item [line]="{style:'smooth'}"type="area" [data]="data1" [categoryField]="'category'" [field]="'value1'" name="Max Kw" valueField="'value1'" [axis]="'maxKwAxis'" color="#EA6A47" ></kendo-chart-series-item>
+          <kendo-chart-series-item type="bar" [data]="data2" [categoryField]="'category'" [field]="'value2'" name="No of Chargers" valueField="'value2'" [axis]="'numChargersAxis'" color="#0091D5" [gap]="3"></kendo-chart-series-item>
         </kendo-chart-series>
     </kendo-chart>
     </ng-container>

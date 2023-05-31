@@ -7,6 +7,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
 import { MarkerClusterGroup } from 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import { SiteService } from 'src/app/shared/services/site.service';
+import { DoubleClickZoomHandler } from 'mapbox-gl';
 
 interface ExtendedMarkerOptions extends L.MarkerOptions {
   objectData?: any; // Replace 'any' with the specific type of your object if known
@@ -24,7 +25,8 @@ export class MapComponent implements OnInit {
   selectedSite:any;
   markers =[];
 
-  constructor(private _siteService:SiteService) {
+  constructor(
+    private _siteService:SiteService) {
     this._siteService.updatedSiteId.subscribe((res: any) => {
       this.selectedSite = this._siteService.getselectedSite();     
       if(this.selectedSite !== '') {
@@ -131,13 +133,18 @@ markersAPIRes.forEach(charger => {
     
 
             const clickedElement = event.originalEvent.target as HTMLElement;
+            const markerTip = document.querySelector('.leaflet-popup.leaflet-zoom-animated') as HTMLElement;
             const markerPopup = document.querySelector('.leaflet-popup-content') as HTMLDivElement;
             let iconType: string;
+            console.log('markerTip',markerTip)
             if (clickedElement.classList.contains("icon-1") && markerPopup) {
+              markerTip.style.left = '-95px'
               iconType = "icon-1";
             } else if (clickedElement.classList.contains("icon-2") && markerPopup) {
+              markerTip.style.left = '-40px'
               iconType = "icon-2";
             }else if (clickedElement.classList.contains("icon-3")) {
+              markerTip.style.left = '-95px'
               iconType = "icon-3";
             }
             let previousPopupContent = markerPopup;
@@ -227,7 +234,8 @@ markersAPIRes.forEach(charger => {
           const hour = String(localDate.getHours()).padStart(2, '0');
           const minute = String(localDate.getMinutes()).padStart(2, '0');
           const second = String(localDate.getSeconds()).padStart(2, '0');
-          ll = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
+          // ll = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
+          ll = `${day}/${month}/${year}, ${hour}:${minute}`;
         } 
         else {
           ll = 'N/A';
@@ -241,7 +249,8 @@ markersAPIRes.forEach(charger => {
           const hour = String(localDate.getHours()).padStart(2, '0');
           const minute = String(localDate.getMinutes()).padStart(2, '0');
           const second = String(localDate.getSeconds()).padStart(2, '0');
-          ll1 = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
+          // ll1 = `${year}/${month}/${day}, ${hour}:${minute}:${second}`;
+          ll1 = `${day}/${month}/${year}, ${hour}:${minute}`;
         } 
         else {
           ll1 = 'N/A';
@@ -251,15 +260,18 @@ markersAPIRes.forEach(charger => {
           status = charger.Status1 == 'Idling'? 'Available':charger.Status1;
           voltage = charger.Voltage1 != null? `${charger.Voltage1} V`:'N/A';
           power = charger.Power1 != null? `${charger.Power1} A`:'N/A';
-          soc = charger.SoC1 != null? charger.SoC1:'N/A';
+          soc = charger.SoC1 != null? `${charger.SoC1} %`:'N/A';
           paired  = charger.Paired1 != null ? charger.Paired1:'N/A';
           last = ll;
+          // last = this.datePipe.transform(ll, 'dd/MM/yyyy, HH:mm');
+
         } else if (iconType === "icon-2") {
           status = charger.Status2 == 'Idling'? 'Available':charger.Status2;
           voltage = charger.Voltage2 != null? `${charger.Voltage2} V`:'N/A';
           power = charger.Power2 != null? `${charger.Power2} A`:'N/A';
-          soc = charger.SoC2 != null? charger.SoC2:'N/A';
+          soc = charger.SoC2 != null? `${charger.SoC2} %`:'N/A';
           paired  = charger.Paired2 != null ? charger.Paired2:'N/A';
+          last = this.datePipe.transform(ll1, 'dd/MM/yyyy, HH:mm');
           last = ll1;
         }
       

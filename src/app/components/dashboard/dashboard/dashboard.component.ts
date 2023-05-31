@@ -233,14 +233,15 @@ export class DashboardComponent implements OnInit {
   getPowerUsage()
   {
     this.showSpinner=true;
+    this.data1=[];
+    this.data2=[];
+    this.categories=[];
     const data={
       SiteID:this.selectedSite,
       date:this.currentDate
     }
     this._siteService.getPowerUsage(data).subscribe((res:any)=>{  
-      this.data1=[];
-    this.data2=[];
-    this.categories=[];
+      
     this.data1=res.Data.map((obj:any) => ({ category: obj.Hour, value1: obj.MaxkW }));
     this.data2=res.Data.map((obj:any) => ({ category: obj.Hour, value2: obj.Charger }));
     this.categories=res.Data.map((obj:any)=>{obj.Hour});
